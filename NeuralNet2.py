@@ -22,12 +22,18 @@ class Layer:
 class NeuralNet:
     def __init__(self, layers, inputs) :
         self.layers = layers
-        self.inputs = np.append(inputs, [1])
+        self.inputs = inputs
 
 
     def forwardPass(self):
-        self.layers[0].Run(self.inputs)
+        layerinput = self.inputs
 
+        for layer in self.layers:
+            inputwithbias = np.append(layerinput, [1])
+            layer.Run(inputwithbias)
+            layerinput = layer.outputs
+
+        self.output = layerinput
     
 
 
