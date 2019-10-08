@@ -1,5 +1,5 @@
 import math
-
+# Hlello
 class Synapse:
     def __init__(self, in_val, weight):
         self.in_val = in_val
