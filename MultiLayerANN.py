@@ -1,64 +1,42 @@
+import numpy as np
 import math
 
-class Synapse:
-    def __init__(self, in_val, weight):
-        self.in_val = in_val
-        self.weight = weight
+class Node:
+    def __init__(self, weights):
+        self.weights = weights
 
-class Node :
-    def __init__(self, bias, layerIndex, nodeIndex):#, activationfunction) :
-       ## self.synapses = synapses
-        self.bias = bias
-        self.layerIndex = layerIndex
-        self.nodeIndex = nodeIndex
-     #   self.activationfunction = activationfunction
-
-    ##Do the summing
-    def TakeInput(self, inputs):
-        self.in_synapse = []
-        for in_val in inputs:
-            self.in_synapse.append(Synapse(in_val, 1))
-
-        self.Activate()
-
-    def NodeSum(self):
-        self.linearcomb = 1 * self.bias
-         ##No need to do the transpose just now as we are using 1 dimensional vectors
-        for synapse in self.in_synapse:
-           self.linearcomb += synapse.weight * synapse.in_val 
-    
-    def Activate(self):
-        self.NodeSum()
-        self.output = 1 / (1 - math.exp(-self.linearcomb)) # self.activationfunction(self.linearcomb)
+    def fire_node(self, inputs):
+        linearcomb = inputs.dot(self.weights)
+        self.output = 1 / (1 - math.exp(-linearcomb))
 
 class Layer:
-    def __init__ (self, index, nodeCount):
-        self.Nodes = [Node(1, index, x) for x in range(nodeCount)]
-        self.index = index
+    def __init__(self, input_count, node_count) :
+        self.input_count = input_count
+        self.node_count = node_count
+        self.build_layer()
 
-    def SetInput(self, inputs):
-        for node in self.Nodes:
-            node.TakeInput(inputs)
+    def build_layer(self):
+        self.nodes = []
+        for i in range(self.node_count):
+            inputs_with_bias = self.input_count + 1
+            node_weights = np.random.rand(inputs_with_bias)
+            self.nodes.append(Node(node_weights))
 
+    def fire_layer(self, inputs):
+        self.outputs = []
+        for node in self.nodes:
+            node.fire_node(inputs)
+            self.outputs.append(node.output)
 
-class GloriousANN:
-    def __init__ (self, layerCount, nodesPerLayer):
-        self.layers = [Layer(x, nodesPerLayer) for x in range(nodesPerLayer)]
+class NeuralNet:
+    def __init__(self, layers, inputs) :
+        self.layers = layers
+        self.inputs = inputs
 
-    def SetInput(self, inputs):
-        ##set input on first layer
-        self.layers[0].SetInput(inputs)
-        i = 1
-        while (i < len(self.layers)) :
-            
-        
+    def fire_net(self):
+        layerinput = self.inputs
+        for layer in self.layers:
+            inputwithbias = np.append(layerinput, [1])
+            layer.fire_layer(inputwithbias)
 
-
-
-#ANN = GloriousANN(3, 3)
-  
-
-
-
-
-        
+        self.output = layerinput
