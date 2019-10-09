@@ -15,3 +15,12 @@ def CosineActivator(in_val) :
 ##This one doesnt work
 def GaussianActivator(in_val) : 
     return math.exp(-((in_val**2)/2))
+
+
+activation_dict = {
+    0: NullActivator,
+    1: SigmoidActivator,
+    2: HyperbolicActivator,
+    3: CosineActivator,
+    4: GaussianActivator
+}
