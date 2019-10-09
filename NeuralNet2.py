@@ -22,9 +22,6 @@ class Layer:
         self.weights = np.random.rand(inputsWithBias, self.node_count)
         self.weights_and_activations = (self.weights, self.activations)
 
-    def activation(self, in_val) :
-        return 1 / (1 - math.exp(-in_val))
-
     def fire_layer(self, in_vals):
         outputs = in_vals.dot(self.weights)
         
@@ -33,9 +30,7 @@ class Layer:
             activation = activation_dict[self.activations[i]]
             outputs[i] = activation(output)
         self.outputs = outputs
-        
-
-        
+            
 
 class NeuralNet:
     def __init__(self, layers, inputs) :

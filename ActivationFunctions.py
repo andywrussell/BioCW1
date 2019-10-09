@@ -16,11 +16,18 @@ def CosineActivator(in_val) :
 def GaussianActivator(in_val) : 
     return math.exp(-((in_val**2)/2))
 
+def ReLUActivator(in_val) :
+    if in_val < 0:
+        return 0
+
+    return in_val
+
 
 activation_dict = {
     0: NullActivator,
     1: SigmoidActivator,
     2: HyperbolicActivator,
     3: CosineActivator,
-    4: GaussianActivator
+    4: GaussianActivator,
+    5: ReLUActivator
 }
