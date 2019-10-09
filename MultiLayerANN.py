@@ -7,7 +7,8 @@ class Node:
 
     def fire_node(self, inputs):
         linearcomb = inputs.dot(self.weights)
-        self.output = 1 / (1 - math.exp(-linearcomb))
+        ##we should replace this with a changeable activation function
+        self.output = 1 / (1 - math.exp(-linearcomb)) 
 
 class Layer:
     def __init__(self, input_count, node_count) :
@@ -36,7 +37,8 @@ class NeuralNet:
     def fire_net(self):
         layerinput = self.inputs
         for layer in self.layers:
-            inputwithbias = np.append(layerinput, [1])
-            layer.fire_layer(inputwithbias)
+            input_with_bias = np.append(layerinput, [1])
+            layer.fire_layer(input_with_bias)
+            layerinput = layer.outputs
 
         self.output = layerinput
