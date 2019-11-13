@@ -34,8 +34,19 @@ class Layer:
 
 class NeuralNet:
     def __init__(self, layers, inputs) :
+        """
+        Params
+        ======
+        * layers: an array that contains layer objects
+        * inputs: a single input from our dataset (1 row of our inputs)
+        * net_as_vector: the vector version of our net (aka particle)
+        * net_shape: Array of arrays containing the shape of the layer and its activations.
+            each array in net_shape has this form [(shape of weights), (shape of activations)]
+        """
         self.layers = layers
         self.inputs = inputs
+        self.net_as_vector = []
+        self.net_shape = []
 
 
     def fire_net(self):
@@ -47,7 +58,37 @@ class NeuralNet:
             layer_input = layer.outputs
 
         self.output = layer_input
+
+    def flatten_array(self, layer):
+        numpy_flatten = layer.flatten()
+        list_flatten  = numpy_flatten.tolist()
+        return list_flatten
     
+    def flatten_net(self):
+        """
+        Params
+        ======
+        * weights_shape: the original shape of the weights. Used later to un-flatten the net
+        * activations_shape: the original shape of the activations. Used to recover the matrix
+        * layer_shape: An array of 2 tuples. First tuple is the weights_shape, and second tuple is activations_shape
+        """
+        for layer in self.layers:
+
+            weights_shape = layer.weights.shape
+            activations_shape = layer.activations.shape
+            
+            flatten_weights = self.flatten_array(layer.weights)
+            flatten_activations = self.flatten_array(layer.activations)
+            layer_shape = [weights_shape, activations_shape]
+
+            self.net_as_vector = self.net_as_vector + flatten_weights
+            self.net_as_vector = self.net_as_vector + flatten_activations
+            self.net_shape.append(layer_shape)
+
+
+
+
+
 
 
         
