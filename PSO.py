@@ -106,7 +106,8 @@ class PSO:
             
     def update_positions(self):
         for particle in particles:
-            
+            new_pos = particle.postition + particle.velocity
+            particle.update_position(new_pos)
             
 
 
