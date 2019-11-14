@@ -70,7 +70,7 @@ class NeuralNet:
         ======
         * weights_shape: the original shape of the weights. Used later to un-flatten the net
         * activations_shape: the original shape of the activations. Used to recover the matrix
-        * layer_shape: An array of 2 tuples. First tuple is the weights_shape, and second tuple is activations_shape
+        * layer_shape: A dictionary of 2 tuples. First tuple is the weights_shape, and second tuple is activations_shape
         """
         for layer in self.layers:
 
@@ -79,11 +79,75 @@ class NeuralNet:
             
             flatten_weights = self.flatten_array(layer.weights)
             flatten_activations = self.flatten_array(layer.activations)
-            layer_shape = [weights_shape, activations_shape]
+            layer_shape = {'weights': weights_shape, 'activations': activations_shape}
 
             self.net_as_vector = self.net_as_vector + flatten_weights
             self.net_as_vector = self.net_as_vector + flatten_activations
             self.net_shape.append(layer_shape)
+
+    def dot_tuple(self, tuple):
+        """
+        Recieves a tuple and multiplies its elements.
+        We use it to get the number of elements in an array from its shape
+        Example: matrix with shape (3, 6) has 18 elements.
+        """
+        product = 1
+        for i in tuple:
+            product = product * i
+        
+        return product
+
+    def unflatten_array(self, cur_index, length, shape, round=False):
+        """
+        Params
+        ======
+        * cur_index: Starting point to take elements from self.net_as_vector.
+        * length: number of elements to take from self.net_as_vector.
+        * shape: the shape we want our final array to have.
+        * round: if we want the array to have integers instead of floats.
+        """
+
+        flat_array = np.array(self.net_as_vector[cur_index : cur_index + length])
+        cur_index = cur_index + length
+        my_array = flat_array.reshape(shape)
+
+        if (round):
+            my_array = my_array.astype(int)
+
+        return (my_array, cur_index)
+
+    def unflatten_net(self):
+        cur_index = 0
+
+        for i, layer_shape in enumerate(self.net_shape):
+            len_weights = self.dot_tuple(layer_shape['weights'])
+            len_activations =  self.dot_tuple(layer_shape['activations'])
+
+            weights_array, cur_index = self.unflatten_array(cur_index, len_weights, layer_shape['weights'])
+            activations_array, cur_index = self.unflatten_array(cur_index, len_activations, layer_shape['activations'], round=True)
+
+            # Check that our new array has the same shape as the original.
+            assert weights_array.shape == self.layers[i].weights.shape, "new weights's shape is different from original"
+            assert activations_array.shape == self.layers[i].activations.shape, "new activation's shape is different from original"
+
+            # Update
+            self.layers[i].weights = weights_array
+            self.layers[i].activations = activations_array
+
+        # When finished reset our vector.
+        self.net_as_vector = []
+
+    def print_net(self):
+        for i, layer in enumerate(self.layers):
+            print("Layer #{}".format(i + 1))
+            print("* Weights (# rows = # of neurns in layer || # columns = # neuron weights):")
+            print(layer.weights)
+            print("* Activations: ")
+            print(layer.activations)
+            print("\n")
+
+            
+
 
 
 
