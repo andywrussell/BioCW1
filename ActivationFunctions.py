@@ -31,3 +31,12 @@ activation_dict = {
     4: GaussianActivator,
     5: ReLUActivator
 }
+
+activation_index = {
+    0: "Null Activator",
+    1: "Sigmoid Activator",
+    2: "Hyperbolic Activator",
+    3: "Cosine Activator",
+    4: "Gaussian Activator",
+    5: "ReLU Activator"
+}

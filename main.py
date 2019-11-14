@@ -36,4 +36,4 @@ network.net_as_vector = [i*1.5 for i in network.net_as_vector]
 network.unflatten_net()
 
 # Print the new values
-network.print_net()
+#network.print_net()

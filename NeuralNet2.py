@@ -1,7 +1,7 @@
 import numpy as np
 import math
-from ActivationFunctions import activation_dict
-
+from ActivationFunctions import activation_dict, activation_index
+from prettytable import PrettyTable
 
 class Layer:
     def __init__(self, input_count, node_count, activations):
@@ -127,8 +127,8 @@ class NeuralNet:
             activations_array, cur_index = self.unflatten_array(cur_index, len_activations, layer_shape['activations'], round=True)
 
             # Check that our new array has the same shape as the original.
-            assert weights_array.shape == self.layers[i].weights.shape, "new weights's shape is different from original"
-            assert activations_array.shape == self.layers[i].activations.shape, "new activation's shape is different from original"
+            assert weights_array.shape == self.layers[i].weights.shape, "new weights array shape is different from original"
+            assert activations_array.shape == self.layers[i].activations.shape, "new activation array shape is different from original"
 
             # Update
             self.layers[i].weights = weights_array
@@ -138,15 +138,24 @@ class NeuralNet:
         self.net_as_vector = []
 
     def print_net(self):
+        print("Neural Net Structure")
+        print("====================")
         for i, layer in enumerate(self.layers):
-            print("Layer #{}".format(i + 1))
-            print("* Weights (# rows = # of neurns in layer || # columns = # neuron weights):")
-            print(layer.weights)
-            print("* Activations: ")
-            print(layer.activations)
-            print("\n")
+            print("\nLayer {}".format(i + 1))
 
-            
+            # Create a table
+            t_weights = np.transpose(layer.weights)
+            header =[" ", "Activation"]
+            header = header + ["weight {}".format(j) for j in range(1, layer.weights.shape[0])] + ["weight bias"]
+            table = PrettyTable(header)
+
+            for j, weights_row in enumerate(t_weights):
+                row_id = "Neuron {}".format(j+1)
+                activation = "{} ({})".format(layer.activations[j], activation_index[layer.activations[j]])
+                row = [row_id] + [activation] + weights_row.tolist()
+
+                table.add_row(row)
+            print(table)
 
 
 
