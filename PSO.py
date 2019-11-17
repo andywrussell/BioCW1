@@ -1,28 +1,35 @@
 import numpy as np
 import random as rand
+from NeuralNet2 import Layer, NeuralNet
 
 class Particle:
-    def __init__(self, position, velocity, ideal):
+    def __init__(self, network, position, velocity, ideal):
         #the index of a position or velocity in the list corresponds to a timestamp
         self.position_list = [position]
         self.velocity_list = [velocity]
+        self.network = network
         self.position = position
         self.velocity = velocity
         self.ideal = ideal
         self.best = position
-        self.fitness = np.linalg.norm(self.ideal-self.position) 
+        self.network.fire_net() 
+        self.fitness = np.linalg.norm(self.ideal-self.network.output)
         self.best_fitness = self.fitness
 
     def update_position(self, new_pos):
-        self.position_list.append(new_pos)
+        self.position_list.append(new_pos)        
         self.position = new_pos
+        self.network.flatten_net()
+        self.network.net_as_vector = new_pos
+        self.network.unflatten_net()
         
     def update_velocity(self, new_vel):
         self.velocity_list.append(new_vel)
         self.velocity = new_vel
 
     def asses_fitness(self):
-        self.fitness = np.linalg.norm(self.ideal-self.position) #numpy implementation of euclidean distance   
+        self.network.fire_net() 
+        self.fitness = np.linalg.norm(self.ideal-self.network.output) #numpy implementation of euclidean distance   
         #otherwise get distance from ideal and see if it is better than current best
         if (self.fitness < self.best_fitness):
             self.best = self.position
@@ -55,15 +62,39 @@ class PSO:
     def generate_particles(self):
         self.particles = []
         for i in range(self.swarmsize):
-            particle_pos = np.array([])
+            #create new ann
+            layer1 = Layer(input_count=2 , node_count=4, activations=[0,1,2,2])
+            layer1.build_layer()
+
+            layer2 = Layer(input_count=4 , node_count=1, activations=[2])
+            layer2.build_layer()
+            
+            layers = [layer1, layer2]
+            
+            my_test_input = np.array([1,3])
+            network = NeuralNet(layers, my_test_input)
+            network.flatten_net()
+            
+            particle_pos = network.net_as_vector 
+            network.unflatten_net()
             particle_vel = np.array([])
             
-            for j in range(len(self.ideal)):
-                particle_pos = np.append(particle_pos, np.random.uniform(-10.0, 10.0))
+            for j in range(len(particle_pos)):
                 particle_vel = np.append(particle_vel, np.random.uniform(-10.0, 10.0))
-
-            new_particle = Particle(particle_pos, particle_vel, self.ideal)
+                
+            new_particle = Particle(network, particle_pos, particle_vel, self.ideal)
             self.particles.append(new_particle)
+# =============================================================================
+#             particle_pos = np.array([])
+#             particle_vel = np.array([])
+#             
+#             for j in range(len(self.ideal)):
+#                 particle_pos = np.append(particle_pos, np.random.uniform(-10.0, 10.0))
+#                 particle_vel = np.append(particle_vel, np.random.uniform(-10.0, 10.0))
+# 
+#             new_particle = Particle(particle_pos, particle_vel, self.ideal)
+#             self.particles.append(new_particle)
+# =============================================================================
 
     def assign_informants(self):
         for particle in self.particles:
@@ -76,8 +107,9 @@ class PSO:
         for particle in self.particles:
             particle.asses_fitness()
             if self.best == None:
-                self.best = Particle(particle.position, particle.velocity, particle.ideal)
+                self.best = Particle(particle.network, particle.position, particle.velocity, particle.ideal)
             elif particle.fitness < self.best.fitness:
+                self.best.network = particle.network
                 self.best.update_position(particle.position)
                 self.best.update_velocity(particle.velocity)
                 self.best.asses_fitness()
@@ -138,10 +170,11 @@ beta = 1
 gamma = 1
 delta = 1
 jumpsize = 0.5
-ideal = [0.0,0.0]
-boundary = [5,5]
+ideal = [-1]
+boundary = [5]
 num_informants = 10
 max_runs = 1000
+
 
 my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, num_informants, max_runs, boundary)
 my_pso.run_algo()
