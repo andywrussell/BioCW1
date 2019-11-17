@@ -37,3 +37,12 @@ network.unflatten_net()
 
 # Print the new values
 #network.print_net()
+
+# Flatten the net again
+network.flatten_net()
+
+network.unflatten_net()
+
+network.flatten_net()
+
+network.unflatten_net()

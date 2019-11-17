@@ -85,6 +85,7 @@ class NeuralNet:
             self.net_as_vector = self.net_as_vector + flatten_activations
             self.net_shape.append(layer_shape)
 
+
     def dot_tuple(self, tuple):
         """
         Recieves a tuple and multiplies its elements.
@@ -106,11 +107,10 @@ class NeuralNet:
         * shape: the shape we want our final array to have.
         * round: if we want the array to have integers instead of floats.
         """
-
         flat_array = np.array(self.net_as_vector[cur_index : cur_index + length])
         cur_index = cur_index + length
         my_array = flat_array.reshape(shape)
-
+        
         if (round):
             my_array = my_array.astype(int)
 
@@ -136,6 +136,7 @@ class NeuralNet:
 
         # When finished reset our vector.
         self.net_as_vector = []
+        self.net_shape = []
 
     def print_net(self):
         print("Neural Net Structure")
