@@ -4,6 +4,8 @@ from ANN.neuralNet import NeuralNet
 from ANN.layer import Layer
 from helpers import MSE 
 from tqdm import tqdm
+import os
+from helpers import read_data
 
 class Particle:
     def __init__(self, network, position, velocity, ideal, inputs):
@@ -34,21 +36,8 @@ class Particle:
         self.velocity = new_vel
 
     def asses_fitness(self):
-<<<<<<< HEAD
-        self.outputs = []
-        for my_in in self.inputs:
-            self.network.inputs = my_in
-            self.network.fire_net() 
-            self.outputs.append(self.network.output)
-    
-        self.fitness = 0
-        for i in range(len(self.outputs)):
-            self.fitness += MSE(self.outputs[i], ideal[i])
-            
-=======
-        self.network.fire_net()
-        self.fitness = np.linalg.norm(self.ideal-self.network.output) #numpy implementation of euclidean distance   
->>>>>>> 19b676dfd4f5033c08c15f610c23b200c659e0af
+        self.fitness, self.outputs = self.network.get_fitness(self.inputs, self.ideal)
+        
         #otherwise get distance from ideal and see if it is better than current best
         if (self.best_fitness == None or self.fitness < self.best_fitness):
             self.best = self.position
@@ -92,8 +81,8 @@ class PSO:
             
             layers = [layer1, layer2]
             
-            my_test_input = np.array([1])
-            network = NeuralNet(layers, my_test_input)
+           # my_test_input = np.array([1])
+            network = NeuralNet(layers, error_function=MSE)
             network.flatten_net()
             
             particle_pos = network.net_as_vector 
@@ -181,14 +170,17 @@ beta = 1
 gamma = 1
 delta = 1
 jumpsize = 0.5
-ideal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#ideal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 boundary = 5
 num_informants = 10
 max_runs = 1000
 
 
-my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary)
+current_dir = os.getcwd() + '/'
+inputs, ideal = read_data(current_dir, "1in_linear.txt")
+
+my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal.head(10), inputs.head(10), num_informants, max_runs, boundary)
 my_pso.run_algo()
 
 #my_pso.generate_particles()
