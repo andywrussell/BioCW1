@@ -1,20 +1,26 @@
 import numpy as np
 import random as rand
-from NeuralNet2 import Layer, NeuralNet
+from ANN.neuralNet import NeuralNet
+from ANN.layer import Layer
+from helpers import MSE 
+from tqdm import tqdm
 
 class Particle:
-    def __init__(self, network, position, velocity, ideal):
+    def __init__(self, network, position, velocity, ideal, inputs):
         #the index of a position or velocity in the list corresponds to a timestamp
         self.position_list = [position]
         self.velocity_list = [velocity]
         self.network = network
         self.position = position
         self.velocity = velocity
+        self.inputs = inputs
+        self.outputs = []
         self.ideal = ideal
         self.best = position
-        self.network.fire_net() 
-        self.fitness = np.linalg.norm(self.ideal-self.network.output)
-        self.best_fitness = self.fitness
+       # self.network.fire_net() 
+        self.best_fitness = None
+        self.asses_fitness()
+
 
     def update_position(self, new_pos):
         self.position_list.append(new_pos)        
@@ -28,12 +34,26 @@ class Particle:
         self.velocity = new_vel
 
     def asses_fitness(self):
+<<<<<<< HEAD
+        self.outputs = []
+        for my_in in self.inputs:
+            self.network.inputs = my_in
+            self.network.fire_net() 
+            self.outputs.append(self.network.output)
+    
+        self.fitness = 0
+        for i in range(len(self.outputs)):
+            self.fitness += MSE(self.outputs[i], ideal[i])
+            
+=======
         self.network.fire_net()
         self.fitness = np.linalg.norm(self.ideal-self.network.output) #numpy implementation of euclidean distance   
+>>>>>>> 19b676dfd4f5033c08c15f610c23b200c659e0af
         #otherwise get distance from ideal and see if it is better than current best
-        if (self.fitness < self.best_fitness):
+        if (self.best_fitness == None or self.fitness < self.best_fitness):
             self.best = self.position
-            self.best_fitness = self.fitness
+            self.best_fitness = self.fitness            
+    
                 
     def informants_best(self):
         inf_best = self.informants[0]        
@@ -45,7 +65,7 @@ class Particle:
 
 
 class PSO:
-    def __init__ (self, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, num_informants, max_runs, boundary) :
+    def __init__ (self, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary) :
         self.swarmsize = swarmsize #size of the swarm
         self.alpha = alpha #proportion of velocity to be retained
         self.beta = beta #proportion of personal best to be retained
@@ -54,6 +74,7 @@ class PSO:
         self.jumpsize = jumpsize #jumpsize
         self.num_informants = num_informants #number of randomly selected informants per particle
         self.ideal = ideal
+        self.inputs = inputs
         self.max_runs = max_runs
         self.best = None #this is probably not a good idea
         self.boundary = boundary
@@ -63,15 +84,15 @@ class PSO:
         self.particles = []
         for i in range(self.swarmsize):
             #create new ann
-            layer1 = Layer(input_count=2 , node_count=4, activations=[0,1,2,2])
+            layer1 = Layer(input_count=1 , node_count=4, activations=[0,1,2,2])
             layer1.build_layer()
 
-            layer2 = Layer(input_count=4 , node_count=1, activations=[2])
+            layer2 = Layer(input_count=4 , node_count=1, activations=[0])
             layer2.build_layer()
             
             layers = [layer1, layer2]
             
-            my_test_input = np.array([1,3])
+            my_test_input = np.array([1])
             network = NeuralNet(layers, my_test_input)
             network.flatten_net()
             
@@ -82,19 +103,9 @@ class PSO:
             for j in range(len(particle_pos)):
                 particle_vel = np.append(particle_vel, np.random.uniform(-10.0, 10.0))
                 
-            new_particle = Particle(network, particle_pos, particle_vel, self.ideal)
+            new_particle = Particle(network, particle_pos, particle_vel, self.ideal, self.inputs)
             self.particles.append(new_particle)
-# =============================================================================
-#             particle_pos = np.array([])
-#             particle_vel = np.array([])
-#             
-#             for j in range(len(self.ideal)):
-#                 particle_pos = np.append(particle_pos, np.random.uniform(-10.0, 10.0))
-#                 particle_vel = np.append(particle_vel, np.random.uniform(-10.0, 10.0))
-# 
-#             new_particle = Particle(particle_pos, particle_vel, self.ideal)
-#             self.particles.append(new_particle)
-# =============================================================================
+
 
     def assign_informants(self):
         for particle in self.particles:
@@ -107,7 +118,7 @@ class PSO:
         for particle in self.particles:
             particle.asses_fitness()
             if self.best == None:
-                self.best = Particle(particle.network, particle.position, particle.velocity, particle.ideal)
+                self.best = Particle(particle.network, particle.position, particle.velocity, particle.ideal, particle.inputs)
             elif particle.fitness < self.best.fitness:
                 self.best.network = particle.network
                 self.best.update_position(particle.position)
@@ -164,19 +175,20 @@ class PSO:
         print(runs)
             
             
-swarmsize = 1000
+swarmsize = 100
 alpha = 1
 beta = 1
 gamma = 1
 delta = 1
 jumpsize = 0.5
-ideal = [-1]
+ideal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 boundary = 5
 num_informants = 10
 max_runs = 1000
 
 
-my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, num_informants, max_runs, boundary)
+my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary)
 my_pso.run_algo()
 
 #my_pso.generate_particles()
