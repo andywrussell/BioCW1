@@ -1,8 +1,9 @@
 from ActivationFunctions import activation_dict
 import numpy as np
+import random
 
 class Layer:
-    def __init__(self, input_count, node_count, activations):
+    def __init__(self, input_count, node_count, activations=[]):
         """
         Params
         ======
@@ -13,7 +14,13 @@ class Layer:
 
         self.input_count = input_count
         self.node_count = node_count
-        self.activations = np.asarray(activations)
+
+        if (len(activations) == 0):
+            size = len(activation_dict) - 1
+            rand_activations = [random.randint(0, size) for i in range(size)]
+            self.activations = np.asarray(rand_activations)
+        else:
+            self.activations = np.asarray(activations)
 
     def build_layer(self) :
         inputsWithBias = self.input_count + 1
