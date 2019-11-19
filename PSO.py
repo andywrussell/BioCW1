@@ -28,7 +28,7 @@ class Particle:
         self.velocity = new_vel
 
     def asses_fitness(self):
-        self.network.fire_net() 
+        self.network.fire_net()
         self.fitness = np.linalg.norm(self.ideal-self.network.output) #numpy implementation of euclidean distance   
         #otherwise get distance from ideal and see if it is better than current best
         if (self.fitness < self.best_fitness):
