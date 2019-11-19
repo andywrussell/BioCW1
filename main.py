@@ -12,7 +12,7 @@ import os
 
 
 current_dir = os.getcwd() + '/'
-inputs, outputs = read_data(current_dir, "2in_complex.txt")
+inputs, outputs = read_data(current_dir, "2in_xor.txt")
 
 # Create a toy network
 layer1 = Layer(input_count=2 , node_count=4)
@@ -28,4 +28,3 @@ network = NeuralNet(layers, error_function=MSE)
 fitness, predictions = network.get_fitness(inputs, outputs)
 
 print(fitness)
-print(predictions)

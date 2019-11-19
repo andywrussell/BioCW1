@@ -5,8 +5,8 @@ def MSE(output, prediction):
 
 
 def read_data(path, filename):
-    data = pd.read_csv(path + 'Data/' + filename, sep='\t', header=None)
-    column_names =data.columns.tolist()
+    data = pd.read_csv(path + 'Data/' + filename, delim_whitespace=True, header=None)
+    column_names = data.columns.tolist()
     data.columns = column_names
 
     
