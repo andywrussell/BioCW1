@@ -143,7 +143,7 @@ class PSO:
             
             #if it exceeds the boundary reverse velocity
             for i in range(len(new_pos)):
-                if (new_pos[i] > self.boundary[i] or new_pos[i] < -self.boundary[i]):
+                if (new_pos[i] > self.boundary or new_pos[i] < -self.boundary):
                     particle.velocity[i] = -particle.velocity[i]
                     
             new_pos = particle.position + (np.dot(self.jumpsize, particle.velocity))
@@ -171,7 +171,7 @@ gamma = 1
 delta = 1
 jumpsize = 0.5
 ideal = [-1]
-boundary = [5]
+boundary = 5
 num_informants = 10
 max_runs = 1000
 
