@@ -1,36 +1,8 @@
 import numpy as np
 import math
-from ActivationFunctions import activation_dict, activation_index
+from ANN.layer import Layer
+from ActivationFunctions import activation_index
 from prettytable import PrettyTable
-
-class Layer:
-    def __init__(self, input_count, node_count, activations):
-        """
-        Params
-        ======
-        * input_count = number of inputs
-        * node_count = number of nodes in the layer
-        * activations = activations for each node
-        """
-
-        self.input_count = input_count
-        self.node_count = node_count
-        self.activations = np.asarray(activations)
-
-    def build_layer(self) :
-        inputsWithBias = self.input_count + 1
-        self.weights = np.random.rand(inputsWithBias, self.node_count)
-        self.weights_and_activations = (self.weights, self.activations)
-
-    def fire_layer(self, in_vals):
-        outputs = in_vals.dot(self.weights)
-        
-        # Apply the activation for the output of each neuron
-        for i, output in enumerate(outputs):
-            activation = activation_dict[self.activations[i]]
-            outputs[i] = activation(output)
-        self.outputs = outputs
-            
 
 class NeuralNet:
     def __init__(self, layers, inputs) :
@@ -98,21 +70,22 @@ class NeuralNet:
         
         return product
 
-    def unflatten_array(self, cur_index, length, shape, round=False):
+    def unflatten_array(self, cur_index, length, shape, isActivation=False):
         """
         Params
         ======
         * cur_index: Starting point to take elements from self.net_as_vector.
         * length: number of elements to take from self.net_as_vector.
         * shape: the shape we want our final array to have.
-        * round: if we want the array to have integers instead of floats.
+        * isActivation: if they are activations we might want to treat them differently.
         """
         flat_array = np.array(self.net_as_vector[cur_index : cur_index + length])
         cur_index = cur_index + length
         my_array = flat_array.reshape(shape)
         
-        if (round):
+        if (isActivation):
             my_array = my_array.astype(int)
+            my_array = np.abs(my_array)
 
         return (my_array, cur_index)
 
@@ -124,7 +97,7 @@ class NeuralNet:
             len_activations =  self.dot_tuple(layer_shape['activations'])
 
             weights_array, cur_index = self.unflatten_array(cur_index, len_weights, layer_shape['weights'])
-            activations_array, cur_index = self.unflatten_array(cur_index, len_activations, layer_shape['activations'], round=True)
+            activations_array, cur_index = self.unflatten_array(cur_index, len_activations, layer_shape['activations'], isActivation=True)
 
             # Check that our new array has the same shape as the original.
             assert weights_array.shape == self.layers[i].weights.shape, "new weights array shape is different from original"

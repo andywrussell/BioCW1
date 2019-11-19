@@ -1,7 +1,8 @@
 # We can use this file to run our program once it is done.
 
 # For now I run some experiments flattening the net.
-from NeuralNet2 import Layer, NeuralNet
+from ANN.neuralNet import NeuralNet
+from ANN.layer import Layer
 import numpy as np
 import pandas as pd
 import os
@@ -21,7 +22,7 @@ layers = [layer1, layer2]
 my_test_input = np.array([1,3])
 
 network = NeuralNet(layers, my_test_input)
-network.fire_net()
+#network.fire_net()
 
 # Explore the nets shape
 network.print_net()
@@ -30,19 +31,16 @@ network.print_net()
 network.flatten_net()
 
 # Change the values of the flatten net
-network.net_as_vector = [i*1.5 for i in network.net_as_vector]
+network.net_as_vector = [i-5 for i in network.net_as_vector]
 
 # Recovering the network
 network.unflatten_net()
 
 # Print the new values
-#network.print_net()
+network.print_net()
 
-# Flatten the net again
+# Flatten the net again (for tests)
 network.flatten_net()
-
 network.unflatten_net()
-
 network.flatten_net()
-
 network.unflatten_net()
