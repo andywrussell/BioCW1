@@ -84,8 +84,10 @@ class NeuralNet:
         my_array = flat_array.reshape(shape)
         
         if (isActivation):
+            threshold = len(activation_index) - 1
             my_array = my_array.astype(int)
             my_array = np.abs(my_array)
+            my_array[my_array > threshold] = threshold
 
         return (my_array, cur_index)
 
