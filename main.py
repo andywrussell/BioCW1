@@ -7,6 +7,12 @@ import numpy as np
 import pandas as pd
 import os
 from helpers import MSE
+from helpers import read_data
+import os
+
+
+current_dir = os.getcwd() + '/'
+inputs, outputs = read_data(current_dir, "2in_complex.txt")
 
 
 # Create a toy network
@@ -25,7 +31,7 @@ network = NeuralNet(layers, my_test_input)
 #network.fire_net()
 
 # Explore the nets shape
-network.print_net()
+#network.print_net()
 
 # Result of neural net as a 1d vector
 network.flatten_net()
@@ -37,7 +43,7 @@ network.net_as_vector = [i-5 for i in network.net_as_vector]
 network.unflatten_net()
 
 # Print the new values
-network.print_net()
+#network.print_net()
 
 # Flatten the net again (for tests)
 network.flatten_net()

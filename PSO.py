@@ -34,6 +34,7 @@ class Particle:
         self.velocity = new_vel
 
     def asses_fitness(self):
+<<<<<<< HEAD
         self.outputs = []
         for my_in in self.inputs:
             self.network.inputs = my_in
@@ -44,6 +45,10 @@ class Particle:
         for i in range(len(self.outputs)):
             self.fitness += MSE(self.outputs[i], ideal[i])
             
+=======
+        self.network.fire_net()
+        self.fitness = np.linalg.norm(self.ideal-self.network.output) #numpy implementation of euclidean distance   
+>>>>>>> 19b676dfd4f5033c08c15f610c23b200c659e0af
         #otherwise get distance from ideal and see if it is better than current best
         if (self.best_fitness == None or self.fitness < self.best_fitness):
             self.best = self.position
