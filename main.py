@@ -25,6 +25,7 @@ layers = [layer1, layer2]
 
 # Check that neural net works
 network = NeuralNet(layers, error_function=MSE)
-fitness = network.get_fitness(inputs, outputs)
+fitness, predictions = network.get_fitness(inputs, outputs)
 
 print(fitness)
+print(predictions)

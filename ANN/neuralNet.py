@@ -30,18 +30,22 @@ class NeuralNet:
         self.output = layer_input
 
     def get_fitness(self, inputs, outputs):
-        results = np.zeros(inputs.shape[0])
+        errors = np.zeros(inputs.shape[0])
+        predictions = np.zeros(inputs.shape[0])
 
         for i , row in inputs.iterrows():
             input = [row[i] for i in range(row.shape[0])]
             self.fire_net(input)
 
             prediction = self.output
+            predictions[i] = prediction
+
             output = outputs.iloc[i]
 
             error = self.error_function(output, prediction)
-            results[i] = error
-        return np.mean(results)
+            errors[i] = error
+
+        return (np.mean(errors), predictions)
 
     def flatten_array(self, layer):
         numpy_flatten = layer.flatten()
