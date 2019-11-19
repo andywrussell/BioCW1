@@ -4,7 +4,9 @@ def NullActivator(in_val) :
     return 0
 
 def SigmoidActivator(in_val) :
-    return 1 / (1 + math.exp(-in_val))
+    return 1 / (1 + math.exp(-abs(in_val)))
+    return 1
+    
 
 def HyperbolicActivator(in_val) : 
     return math.tanh(in_val)
