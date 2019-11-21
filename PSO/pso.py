@@ -31,6 +31,7 @@ class PSO:
             """
             network = self.net_generator.generate_network()
             network.flatten_net()
+            
 
             particle_pos = network.net_as_vector 
             network.unflatten_net()
@@ -106,11 +107,11 @@ class PSO:
 
         progress_bar = tqdm(range(self.max_runs))
         for i in progress_bar:
-            if self.best == None or (self.best.fitness > 0.001):
+            if self.best == None or (self.best.fitness > 0.01):
                 self.asses_fitness()
                 self.update_velocity()
                 self.update_positions()
-                progress_bar.set_description(" Run {}/{}".format(run, self.max_runs))
+                progress_bar.set_description(" Run {}/{} | Best fitness = {}".format(run, self.max_runs, round(self.best.fitness, 4)))
                 run += 1
             else:
                 break;            

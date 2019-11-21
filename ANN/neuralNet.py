@@ -47,7 +47,6 @@ class NeuralNet:
 
             error = self.error_function(output, prediction)
             errors[i] = error
-
         return (np.mean(errors), predictions)
 
     def flatten_array(self, layer):
