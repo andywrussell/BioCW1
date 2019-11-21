@@ -1,4 +1,4 @@
-from ActivationFunctions import activation_dict
+from utils.activationFunctions import activation_dict
 import numpy as np
 import random
 

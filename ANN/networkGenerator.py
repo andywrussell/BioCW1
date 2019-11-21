@@ -1,6 +1,6 @@
 from ANN.neuralNet import NeuralNet
 from ANN.layer import Layer
-from helpers import MSE 
+from utils.helpers import MSE 
 """
 This class saves the parameters we want to use in the network.
 It can generate a Neural Net that we assign to each particle.

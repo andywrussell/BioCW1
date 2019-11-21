@@ -4,12 +4,11 @@
 from ANN.neuralNet import NeuralNet
 from ANN.layer import Layer
 from ANN.networkGenerator import NetworkGenerator
-from PSO import PSO
+from PSO.pso import PSO
 import numpy as np
 import pandas as pd
 import os
-from helpers import MSE
-from helpers import read_data
+from utils.helpers import MSE, read_data
 import os
 
 
@@ -23,7 +22,7 @@ jumpsize = 0.5
 #inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 boundary = 5
 num_informants = 10
-max_runs = 1000
+max_runs = 2
 
 # Shape of our neural net
 net_generator = NetworkGenerator()
@@ -37,5 +36,4 @@ my_pso = PSO(net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, idea
 my_pso.run_algo()
 
 best_fitness = my_pso.best.outputs
-print(ideal)
-print(best_fitness)
+print(my_pso.best.best_fitness)

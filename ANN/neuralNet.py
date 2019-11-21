@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from ANN.layer import Layer
-from ActivationFunctions import activation_index
+from utils.activationFunctions import activation_index
 from prettytable import PrettyTable
 
 class NeuralNet:
