@@ -102,7 +102,7 @@ class PSO:
     def run_algo(self):
         self.generate_particles()
         self.assign_informants()
-        run = 0;
+        run = 1;
 
         progress_bar = tqdm(range(self.max_runs))
         for i in progress_bar:
