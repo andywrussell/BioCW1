@@ -5,7 +5,8 @@ from ActivationFunctions import activation_index
 from prettytable import PrettyTable
 
 class NeuralNet:
-    def __init__(self, layers, error_function) :
+
+    def __init__(self, error_function, layers=[]) :
         """
         Params
         ======
@@ -15,11 +16,16 @@ class NeuralNet:
         * net_shape: Array of arrays containing the shape of the layer and its activations.
             each array in net_shape has this form [(shape of weights), (shape of activations)]
         """
-        self.layers = layers
+        self.layers = []
         self.net_as_vector = []
         self.net_shape = []
         self.error_function = error_function
 
+    def add_layer(self, input_count, node_count, activations=[]):
+        layer = Layer(input_count , node_count, activations)
+        layer.build_layer()
+        
+        self.layers.append(layer)
 
     def fire_net(self, layer_input):
         for layer in self.layers:
