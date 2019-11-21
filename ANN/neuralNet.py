@@ -5,8 +5,7 @@ from ActivationFunctions import activation_index
 from prettytable import PrettyTable
 
 class NeuralNet:
-
-    def __init__(self, error_function, layers=[]) :
+    def __init__(self, error_function) :
         """
         Params
         ======
@@ -21,12 +20,6 @@ class NeuralNet:
         self.net_shape = []
         self.error_function = error_function
 
-    def add_layer(self, input_count, node_count, activations=[]):
-        layer = Layer(input_count , node_count, activations)
-        layer.build_layer()
-        
-        self.layers.append(layer)
-
     def fire_net(self, layer_input):
         for layer in self.layers:
             input_with_bias = np.append(layer_input, [1])
@@ -36,6 +29,10 @@ class NeuralNet:
         self.output = layer_input
 
     def get_fitness(self, inputs, outputs):
+        """
+        Runs the error function for every value in the dataset.
+        returns: tuple of 1. Mean of errors, 2. Predictions for each value.
+        """
         errors = np.zeros(inputs.shape[0])
         predictions = np.zeros(inputs.shape[0])
 
@@ -54,6 +51,9 @@ class NeuralNet:
         return (np.mean(errors), predictions)
 
     def flatten_array(self, layer):
+        """
+        Flattens an array.
+        """
         numpy_flatten = layer.flatten()
         list_flatten  = numpy_flatten.tolist()
         return list_flatten
@@ -114,6 +114,9 @@ class NeuralNet:
         return (my_array, cur_index)
 
     def unflatten_net(self):
+        """
+        Unflattens the whole network given a vector of values and a shape vector.
+        """
         cur_index = 0
 
         for i, layer_shape in enumerate(self.net_shape):
@@ -136,6 +139,9 @@ class NeuralNet:
         self.net_shape = []
 
     def print_net(self):
+        """
+        Prints the Neural network in a table format.
+        """
         print("Neural Net Structure")
         print("====================")
         for i, layer in enumerate(self.layers):

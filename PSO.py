@@ -54,7 +54,8 @@ class Particle:
 
 
 class PSO:
-    def __init__ (self, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary) :
+    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary) :
+        self.net_generator = net_generator # Class that returns a neural net with given layers.
         self.swarmsize = swarmsize #size of the swarm
         self.alpha = alpha #proportion of velocity to be retained
         self.beta = beta #proportion of personal best to be retained
@@ -73,16 +74,19 @@ class PSO:
         self.particles = []
         for i in range(self.swarmsize):
             
-           # my_test_input = np.array([1])
+            # my_test_input = np.array([1])
+            """
             network = NeuralNet(error_function=MSE)
             network.add_layer(input_count=2 , node_count=4, activations=[0,1,2,2])
             network.add_layer(input_count=4 , node_count=1, activations=[0])
+            """
+            network = self.net_generator.generate_network()
             network.flatten_net()
-            
+
             particle_pos = network.net_as_vector 
             network.unflatten_net()
             particle_vel = np.array([])
-            
+
             for j in range(len(particle_pos)):
                 particle_vel = np.append(particle_vel, np.random.uniform(-10.0, 10.0))
                 
@@ -158,25 +162,3 @@ class PSO:
         print(runs)
             
             
-swarmsize = 100
-alpha = 1
-beta = 1
-gamma = 1
-delta = 1
-jumpsize = 0.5
-#ideal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-#inputs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-boundary = 5
-num_informants = 10
-max_runs = 10
-
-
-current_dir = os.getcwd() + '/'
-inputs, ideal = read_data(current_dir, "2in_xor.txt")
-
-my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary)
-my_pso.run_algo()
-
-print(my_pso.best.best)
-
-#my_pso.generate_particles()

@@ -3,6 +3,7 @@
 # For now I run some experiments flattening the net.
 from ANN.neuralNet import NeuralNet
 from ANN.layer import Layer
+from ANN.networkGenerator import NetworkGenerator
 from PSO import PSO
 import numpy as np
 import pandas as pd
@@ -24,11 +25,15 @@ boundary = 5
 num_informants = 10
 max_runs = 1000
 
+# Shape of our neural net
+net_generator = NetworkGenerator()
+net_generator.add_layer(input_count=2 , node_count=4)
+net_generator.add_layer(input_count=4 , node_count=1)
 
 current_dir = os.getcwd() + '/'
 inputs, ideal = read_data(current_dir, "2in_complex.txt")
 
-my_pso = PSO(swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary)
+my_pso = PSO(net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary)
 my_pso.run_algo()
 
 best_fitness = my_pso.best.outputs
