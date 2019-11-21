@@ -1,5 +1,6 @@
 from PSO.particle import Particle
 import numpy as np
+from tqdm import tqdm
 
 class PSO:
     def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary) :
@@ -101,12 +102,18 @@ class PSO:
     def run_algo(self):
         self.generate_particles()
         self.assign_informants()
-        runs = 0
-        while (self.best == None or (self.best.fitness > 0.001 and runs < self.max_runs)):
-            self.asses_fitness()
-            self.update_velocity()
-            self.update_positions()
-            runs += 1
-        print(runs)
+        run = 0;
+
+        progress_bar = tqdm(range(self.max_runs))
+        for i in progress_bar:
+            if self.best == None or (self.best.fitness > 0.001):
+                self.asses_fitness()
+                self.update_velocity()
+                self.update_positions()
+                progress_bar.set_description(" Run {}/{}".format(run, self.max_runs))
+                run += 1
+            else:
+                break;            
+            
             
             
