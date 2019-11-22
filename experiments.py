@@ -56,7 +56,7 @@ class Experiment:
             self.ideal = self.ideal.head(10)
         
     def print_results(self):
-        print("Show some metrics here!")
+        self.pso.best.network.print_net()
 
     def run(self):
         self.pso.run_algo()

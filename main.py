@@ -20,7 +20,7 @@ params_pso = {
     "jumpsize": 0.5,
     "boundary": 5,
     "num_informants": 10,
-    "max_runs": 500
+    "max_runs": 100
 }
 
 net_layers = {
