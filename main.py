@@ -17,21 +17,21 @@ params_pso = {
     "beta": 1,
     "gamma": 1,
     "delta": 0,
-    "jumpsize": 0.3,
+    "jumpsize": 0.1,
     "act_bound": 5,
     "weight_bound": 0,
-    "num_informants": 2,
-    "max_runs": 200
+    "num_informants": 5,
+    "max_runs": 3
 }
 
 net_layers = {
     "layer1": {
         "input_count":2,
-        "node_count":4,
+        "node_count":8,
         "activations": []
     },
     "layer2": {
-        "input_count":4,
+        "input_count":8,
         "node_count": 1,
         "activations:":[]
     }

@@ -170,7 +170,8 @@ class NeuralNet:
             for j, weights_row in enumerate(t_weights):
                 row_id = "Neuron {}".format(j+1)
                 activation = "{} ({})".format(layer.activations[j], activation_index[layer.activations[j]])
-                row = [row_id] + [activation] + weights_row.tolist()
+                rounded = [round(x, 2) for x in  weights_row.tolist()]
+                row = [row_id] + [activation] + rounded
 
                 table.add_row(row)
             print(table)

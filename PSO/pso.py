@@ -63,6 +63,7 @@ class PSO:
                 self.best.fitness = particle.fitness
                 self.best.best_fitness = particle.best_fitness
                 self.best.best = particle.position
+                self.best.outputs = particle.outputs
                 
     def update_velocity(self): 
         best_pos = self.best.position                        
@@ -120,7 +121,7 @@ class PSO:
 
         progress_bar = tqdm(range(self.max_runs))
         for i in progress_bar:
-            if self.best == None or (self.best.fitness > 0.01):
+            if self.best == None or (self.best.fitness > 0.001):
                 self.asses_fitness()
                 self.update_velocity()
                 self.update_positions()
