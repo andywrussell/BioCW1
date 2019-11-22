@@ -2,6 +2,7 @@ from ANN.networkGenerator import NetworkGenerator
 from PSO.pso import PSO
 from utils.helpers import MSE, read_data
 import os
+import pandas as pd
 
 """
 Class Experiment takes some parameters and runs a pso.
@@ -57,7 +58,10 @@ class Experiment:
             self.ideal = self.ideal.head(10)
         
     def print_results(self):
-        self.pso.best.network.print_net()
+        results = self.pso.best.outputs
+        df = self.ideal.copy()
+        df['results'] = results
+        print(df)
 
     def run(self):
         self.pso.run_algo()

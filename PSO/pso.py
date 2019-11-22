@@ -32,7 +32,6 @@ class PSO:
             """
             network = self.net_generator.generate_network()
             network.flatten_net()
-            
 
             particle_pos = network.net_as_vector 
             network.unflatten_net()

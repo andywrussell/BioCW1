@@ -12,21 +12,21 @@ from utils.helpers import MSE, read_data
 import os
 
 params_pso = {
-    "swarmsize": 100,
+    "swarmsize": 50,
     "alpha": 1,
     "beta": 1,
     "gamma": 1,
     "delta": 0,
-    "jumpsize": 1,
+    "jumpsize": 0.3,
     "act_bound": 5,
     "weight_bound": 0,
-    "num_informants": 5,
-    "max_runs": 100
+    "num_informants": 2,
+    "max_runs": 200
 }
 
 net_layers = {
     "layer1": {
-        "input_count":1,
+        "input_count":2,
         "node_count":4,
         "activations": []
     },
@@ -37,7 +37,7 @@ net_layers = {
     }
 }
 
-experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
+experiment1 = Experiment(params_pso, net_layers, path="2in_xor.txt", debugMode=True)
 experiment1.run()
 
 #network = NeuralNet(MSE)

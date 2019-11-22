@@ -3,6 +3,9 @@ import pandas as pd
 def MSE(output, prediction):
     return (output - prediction)**2
 
+def SUM(output, prediction):
+    return abs(output - prediction)
+
 
 def read_data(path, filename):
     data = pd.read_csv(path + 'Data/' + filename, delim_whitespace=True, header=None)
