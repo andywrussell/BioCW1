@@ -97,15 +97,14 @@ class PSO:
                     particle.velocity[i] = -particle.velocity[i]
                     
             new_pos = particle.position + (np.dot(self.jumpsize, particle.velocity))
-                    
-            
+                         
             particle.update_position(new_pos)
          #   print(particle.position)
             
     def run_algo(self):
         self.generate_particles()
         self.assign_informants()
-        run = 1;
+        run = 1
 
         progress_bar = tqdm(range(self.max_runs))
         for i in progress_bar:
