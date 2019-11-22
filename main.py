@@ -11,27 +11,21 @@ import pandas as pd
 from utils.helpers import MSE, read_data
 import os
 
-current_dir = os.getcwd() + '/'
-inputs, ideal = read_data(current_dir, "2in_xor.txt")
-
-
 params_pso = {
-    "swarmsize": 60,
+    "swarmsize": 100,
     "alpha": 1,
     "beta": 1,
     "gamma": 1,
     "delta": 1,
     "jumpsize": 0.5,
-    "ideal": inputs,
-    "inputs": ideal,
     "boundary": 5,
     "num_informants": 10,
-    "max_runs": 30
+    "max_runs": 500
 }
 
 net_layers = {
     "layer1": {
-        "input_count":2,
+        "input_count":1,
         "node_count":4,
         "activations": []
     },
@@ -42,5 +36,5 @@ net_layers = {
     }
 }
 
-experiment1 = Experiment(params_pso, net_layers, path="2in_xor.txt")
+experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
 experiment1.run()

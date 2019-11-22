@@ -7,10 +7,11 @@ import os
 Class Experiment takes some parameters and runs a pso.
 """
 class Experiment:
-    def __init__(self, pso_params, net_params, path, net_generator=NetworkGenerator, PSO=PSO):
+    def __init__(self, pso_params, net_params, path, debugMode=True, net_generator=NetworkGenerator, PSO=PSO):
         self.pso_params = pso_params
         self.net_params = net_params
         self.path = path
+        self.debugMode = debugMode
 
         self.pso = None
         self.network = None
@@ -50,6 +51,10 @@ class Experiment:
         current_dir = os.getcwd() + '/'
         self.inputs, self.ideal = read_data(current_dir, path)
 
+        if (self.debugMode):
+            self.inputs = self.inputs.head(10)
+            self.ideal = self.ideal.head(10)
+        
     def print_results(self):
         print("Show some metrics here!")
 
