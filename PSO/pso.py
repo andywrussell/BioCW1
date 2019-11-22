@@ -79,9 +79,9 @@ class PSO:
             d = np.random.uniform(0, self.delta)
                         
             for i in range(len(particle_vel)):                
-                b_val = b*(part_best[i] - particle_vel[i]) 
-                c_val = c*(inf_best[i] -particle_vel[i])
-                d_val = d*(best_pos[i] -particle_vel[i])
+                b_val = b*(part_best[i] - particle.position[i]) 
+                c_val = c*(inf_best[i] -particle.position[i])
+                d_val = d*(best_pos[i] -particle.position[i])
                 
                 new_vel.append(self.alpha*particle_vel[i] + b_val + c_val + d_val)                
                         
@@ -125,10 +125,12 @@ class PSO:
                 self.asses_fitness()
                 self.update_velocity()
                 self.update_positions()
+                cur_best = self.best.fitness
                 progress_bar.set_description(" Run {}/{} | Best fitness = {}".format(run, self.max_runs, round(self.best.fitness, 4)))
                 run += 1
             else:
                 break;            
             
+
             
             

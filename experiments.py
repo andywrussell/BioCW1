@@ -57,13 +57,13 @@ class Experiment:
             self.inputs = self.inputs.head(10)
             self.ideal = self.ideal.head(10)
         
-    def print_results(self, outputs=False, net=True):
+    def print_results(self, outputs=True, net=False):
         # Print outputs
         if (outputs):
             results = self.pso.best.outputs
             df = self.ideal.copy()
             df['results'] = results
-            print(df)
+            print(df.head(10))
         # Print the net
         if (net):
             self.pso.best.network.print_net()
