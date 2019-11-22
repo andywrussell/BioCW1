@@ -19,6 +19,13 @@ class NeuralNet:
         self.net_as_vector = []
         self.net_shape = []
         self.error_function = error_function
+        self.activation_idx = []
+
+    def add_layer(self, input_count, node_count, activations=[]):
+        layer = Layer(input_count , node_count, activations)
+        layer.build_layer()
+        
+        self.layers.append(layer)
 
     def fire_net(self, layer_input):
         for layer in self.layers:
@@ -64,6 +71,8 @@ class NeuralNet:
         * weights_shape: the original shape of the weights. Used later to un-flatten the net
         * activations_shape: the original shape of the activations. Used to recover the matrix
         * layer_shape: A dictionary of 2 tuples. First tuple is the weights_shape, and second tuple is activations_shape
+        * all_idx: Indexes of all elements in the current net_as_vector
+        * act_index: Indexes of the activation functions in net_as_vector
         """
         for layer in self.layers:
 
@@ -76,6 +85,11 @@ class NeuralNet:
 
             self.net_as_vector = self.net_as_vector + flatten_weights
             self.net_as_vector = self.net_as_vector + flatten_activations
+
+            all_idx = [i+1 for i in range(len(self.net_as_vector))]
+            act_index = all_idx[-len(flatten_activations):]
+            self.activation_idx = self.activation_idx + act_index
+
             self.net_shape.append(layer_shape)
 
 
@@ -108,7 +122,7 @@ class NeuralNet:
             threshold = len(activation_index) - 1
             my_array = my_array.astype(int)
             my_array = np.abs(my_array)
-            my_array[my_array > threshold] = threshold
+            #my_array[my_array > threshold] = threshold
 
         return (my_array, cur_index)
 
@@ -136,6 +150,7 @@ class NeuralNet:
         # When finished reset our vector.
         self.net_as_vector = []
         self.net_shape = []
+        self.activation_idx = []
 
     def print_net(self):
         """
