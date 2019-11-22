@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import tqdm
 
 class PSO:
-    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, boundary) :
+    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, act_bound, weight_bound = 0) :
         self.net_generator = net_generator # Class that returns a neural net with given layers.
         self.swarmsize = swarmsize #size of the swarm
         self.alpha = alpha #proportion of velocity to be retained
@@ -16,7 +16,8 @@ class PSO:
         self.inputs = inputs
         self.max_runs = max_runs
         self.best = None #this is probably not a good idea
-        self.boundary = boundary
+        self.act_bound = act_bound #activation boundary
+        self.weight_bound = weight_bound #boundary for weigths
         self.best_count = 0
 
     def generate_particles(self):
@@ -88,15 +89,27 @@ class PSO:
             #print(new_vel)
             
     def update_positions(self):
+
         for particle in self.particles:
             new_pos = particle.position + (np.dot(self.jumpsize, particle.velocity)) #use dot to multiply jumpsize by velo array
             
-            #if it exceeds the boundary reverse velocity
+            act_idx = particle.network.activation_idx
             for i in range(len(new_pos)):
-                if (new_pos[i] > self.boundary or new_pos[i] < -self.boundary):
-                    particle.velocity[i] = -particle.velocity[i]
+                #if we are at an activation function impose boundary
+                boundary = self.weight_bound
+                if i in act_idx:
+                    boundary = self.act_bound
                     
-            new_pos = particle.position + (np.dot(self.jumpsize, particle.velocity))
+                if boundary > 0:
+                    if new_pos[i] > boundary:
+                        diff = new_pos[i] - boundary
+                        particle.velocity[i] = -particle.velocity[i]
+                        new_pos[i] = boundary + (self.jumpsize * particle.velocity[i])
+                    elif new_pos[i] < -boundary:
+                        diff = abs(new_pos[i]) - boundary
+                        new_pos[i] = (-boundary) + diff
+                        particle.velocity[i] = -particle.velocity[i]
+
                          
             particle.update_position(new_pos)
          #   print(particle.position)

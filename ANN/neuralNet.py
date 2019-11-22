@@ -74,6 +74,7 @@ class NeuralNet:
         * all_idx: Indexes of all elements in the current net_as_vector
         * act_index: Indexes of the activation functions in net_as_vector
         """
+        self.activation_idx = []
         for layer in self.layers:
 
             weights_shape = layer.weights.shape
@@ -122,7 +123,7 @@ class NeuralNet:
             threshold = len(activation_index) - 1
             my_array = my_array.astype(int)
             my_array = np.abs(my_array)
-            #my_array[my_array > threshold] = threshold
+            my_array[my_array > threshold] = threshold
 
         return (my_array, cur_index)
 
@@ -150,7 +151,6 @@ class NeuralNet:
         # When finished reset our vector.
         self.net_as_vector = []
         self.net_shape = []
-        self.activation_idx = []
 
     def print_net(self):
         """
