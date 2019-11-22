@@ -57,15 +57,12 @@ class PSO:
             if self.best == None:
                 self.best = Particle(particle.network, particle.position, particle.velocity, particle.ideal, particle.inputs)
             elif particle.fitness < self.best.fitness:
-                print("{} should be smaller than {}".format(particle.fitness, self.best.fitness))
-
                 self.best.network = particle.network
                 self.best.update_position(particle.position)
                 self.best.update_velocity(particle.velocity)
                 self.best.fitness = particle.fitness
                 self.best.best_fitness = particle.best_fitness
                 self.best.best = particle.position
-                print("Best fitness: {}".format(self.best.fitness))
                 
     def update_velocity(self): 
         best_pos = self.best.position                        

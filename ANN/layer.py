@@ -16,8 +16,7 @@ class Layer:
         self.node_count = node_count
 
         if (len(activations) == 0):
-            size = len(activation_dict) - 1
-            rand_activations = [random.randint(0, size) for i in range(size)]
+            rand_activations = [random.randint(0, self.node_count) for i in range(self.node_count)]
             self.activations = np.asarray(rand_activations)
         else:
             self.activations = np.asarray(activations)
