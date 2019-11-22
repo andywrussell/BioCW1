@@ -57,7 +57,7 @@ params_pso = {
     "jumpsize": 0.5,
     "act_bound": 5,
     "weight_bound": 0.5,
-    "num_informants": 5,
+    "num_informants": 50,
     "max_runs": 100
 }
 
