@@ -41,5 +41,8 @@ class Particle:
             if (inf.best_fitness < inf_best.best_fitness):
                 inf_best = inf
 
-        return inf_best.best
+        if inf_best.best_fitness < self.best_fitness:
+            return inf_best.best
+        else:
+            return self.best
 

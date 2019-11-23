@@ -34,7 +34,9 @@ def run_baseline():
         "weight_bound": 10,
         "bound_strat": 3,
         "num_informants": 3,
-        "max_runs": 100
+        "vel_range": 1,
+        "max_runs": 100,
+        "informants_strat": 2
     }
 
     net_layers = {
@@ -91,7 +93,7 @@ def run_baseline():
         }
     }
 
-    exp5 = Experiment(params_pso, net_layers, path="2in_complex.txt", debugMode=False)
+    exp5 = Experiment(params_pso, net_layers, path="2in_complex.txt", debugMode=True)
     exp5.run()
 
     print("\nBase XOR")

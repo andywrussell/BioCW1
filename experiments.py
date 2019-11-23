@@ -47,6 +47,8 @@ class Experiment:
             bound_strat = self.pso_params["bound_strat"],
             num_informants = self.pso_params["num_informants"],
             max_runs = self.pso_params["max_runs"],
+            vel_range = self.pso_params["vel_range"],
+            informant_strat = self.pso_params["informants_strat"],
             ideal=self.ideal,
             inputs=self.inputs)
 

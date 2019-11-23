@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import tqdm
 
 class PSO:
-    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, act_bound, weight_bound = 0, bound_strat = 3) :
+    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, act_bound, weight_bound = 0, bound_strat = 3, vel_range = 1, informant_strat = 0)  :
         self.net_generator = net_generator # Class that returns a neural net with given layers.
         self.swarmsize = swarmsize #size of the swarm
         self.alpha = alpha #proportion of velocity to be retained
@@ -12,6 +12,7 @@ class PSO:
         self.delta = delta #proportion of global best to be retained
         self.jumpsize = jumpsize #jumpsize
         self.num_informants = num_informants #number of randomly selected informants per particle
+        self.informant_strat = informant_strat #different strategies for the informants 0 random static, 1 random change after each, 2 random change if no new best, 3 ring
         self.ideal = ideal
         self.inputs = inputs
         self.max_runs = max_runs
@@ -19,6 +20,7 @@ class PSO:
         self.act_bound = act_bound #activation boundary
         self.weight_bound = weight_bound #boundary for weigths
         self.bound_strat = bound_strat #0 for no boundary, 1 for ignore move, 2 for set to boundary, 3 for reflect
+        self.vel_range = vel_range #range for initializing velocities
         self.best_count = 0
 
     def generate_particles(self):
@@ -39,25 +41,40 @@ class PSO:
             particle_vel = np.array([])
 
             for j in range(len(particle_pos)):
-                particle_vel = np.append(particle_vel, np.random.uniform(-1, 1))
+                if (self.vel_range > 0):
+                    particle_vel = np.append(particle_vel, np.random.uniform(-self.vel_range, self.vel_range))
+                else:
+                    particle_vel = np.append(particle_vel, 0)
                 
             new_particle = Particle(network, particle_pos, particle_vel, self.ideal, self.inputs)
             self.particles.append(new_particle)
 
 
     def assign_informants(self):
-        for particle in self.particles:
-            particle.informants = []
-            for i in range(self.num_informants):
-                rand_inf = np.random.choice(self.particles)
-                particle.informants.append(rand_inf)
+        if (self.informant_strat == 3): #ring topology
+            for i in range(0, self.swarmsize):
+                self.particles[i].informants = []
+                self.particles[i].informants.append(self.particles[i - 1 % self.swarmsize])
+                if i == self.swarmsize -1:
+                    self.particles[i].informants.append(self.particles[0])
+                else:
+                    self.particles[i].informants.append(self.particles[i + 1 % self.swarmsize])
+        else:
+            for particle in self.particles:
+                particle.informants = []
+                for i in range(self.num_informants):
+                    rand_inf = np.random.choice(self.particles)
+                    particle.informants.append(rand_inf)
                 
     def asses_fitness(self):
+        best_changed = False
         for particle in self.particles:
             particle.asses_fitness()
             if self.best == None:
+                best_changed = True
                 self.best = Particle(particle.network, particle.position, particle.velocity, particle.ideal, particle.inputs)
             elif particle.fitness < self.best.fitness:
+                best_changed = True
                 self.best.network = particle.network
                 self.best.update_position(particle.position)
                 self.best.update_velocity(particle.velocity)
@@ -65,6 +82,12 @@ class PSO:
                 self.best.best_fitness = particle.best_fitness
                 self.best.best = particle.position
                 self.best.outputs = particle.outputs
+        
+        # use adaptive random topology
+        if self.informant_strat == 1:
+            self.assign_informants()
+        elif self.informant_strat == 2 and not best_changed:
+            self.assign_informants()
                 
     def update_velocity(self): 
         best_pos = self.best.position                        
