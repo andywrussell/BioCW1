@@ -103,24 +103,14 @@ class PSO:
                     is_activation = True
                     
                 if boundary > 0:
-                    new_pos[i], particle.velocity[i] = self.check_boundary(new_pos[i], particle.position[i], particle.velocity[i], boundary, is_activation)
-
-                    # if new_pos[i] > boundary:
-                    #     diff = new_pos[i] - boundary
-                    #     particle.velocity[i] = -particle.velocity[i]
-                    #     new_pos[i] = boundary - diff
-                    # elif new_pos[i] < -boundary:
-                    #     diff = abs(new_pos[i]) - boundary
-                    #     new_pos[i] = (-boundary) + diff
-                    #     particle.velocity[i] = -particle.velocity[i]
-                    #     new_pos[i] = -boundary
+                    if new_pos[i] > boundary or new_pos[i] < -boundary:
+                        new_pos[i], particle.velocity[i] = self.enforce_boundary(new_pos[i], particle.position[i], particle.velocity[i], boundary, is_activation)
 
                          
             particle.update_position(new_pos)
-         #   print(particle.position)
 
-    def check_boundary(self, new_pos, old_pos, vel, boundary, is_activation):
-        if self.bound_strat == 0: #ignore boundary
+    def enforce_boundary(self, new_pos, old_pos, vel, boundary, is_activation):
+        if self.bound_strat == 0: #ignore boundary            
             return new_pos, vel
 
         elif self.bound_strat == 1: #ignore move
