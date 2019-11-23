@@ -44,6 +44,7 @@ class Experiment:
             jumpsize = self.pso_params["jumpsize"],
             act_bound = self.pso_params["act_bound"],
             weight_bound = self.pso_params["weight_bound"],
+            bound_strat = self.pso_params["bound_strat"],
             num_informants = self.pso_params["num_informants"],
             max_runs = self.pso_params["max_runs"],
             ideal=self.ideal,

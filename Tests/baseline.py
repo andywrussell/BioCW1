@@ -1,7 +1,7 @@
-from experiments import Experiment
 from ANN.neuralNet import NeuralNet
 from ANN.layer import Layer
 from ANN.networkGenerator import NetworkGenerator
+from experiments import Experiment
 from PSO.pso import PSO
 import numpy as np
 import pandas as pd
@@ -31,6 +31,7 @@ params_pso = {
     "jumpsize": 1,
     "act_bound": 5,
     "weight_bound": 1,
+    "bound_strat": 3,
     "num_informants": 3,
     "max_runs": 100
 }

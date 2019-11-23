@@ -9,6 +9,7 @@ from PSO.pso import PSO
 import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
+from Tests import baseline
 import os
 
 print("\nExperiment 1")
