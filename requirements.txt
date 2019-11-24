@@ -1,0 +1,4 @@
+numpy   # Maths library
+pandas  # Visualize tables
+tqdm    # Progress bar
+prettytable # Print tables.
