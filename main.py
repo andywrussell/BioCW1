@@ -36,11 +36,6 @@ params_pso = {
 
 net_layers = {
     "layer1": {
-<<<<<<< HEAD
-    "input_count":1,
-    "node_count":1,
-    "activations": []
-=======
         "input_count":1,
         "node_count":2,
         "activations": []
@@ -54,7 +49,6 @@ net_layers = {
         "input_count":2,
         "node_count": 1,
         "activations:":[]
->>>>>>> 91a26e42f4d6214626219bf766234c88e5285d3d
     }
 }
 
