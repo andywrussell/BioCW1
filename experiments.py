@@ -8,11 +8,12 @@ import pandas as pd
 Class Experiment takes some parameters and runs a pso.
 """
 class Experiment:
-    def __init__(self, pso_params, net_params, path, debugMode=True, net_generator=NetworkGenerator, PSO=PSO):
+    def __init__(self, pso_params, net_params, path, debugMode=True, sampleMode=False, net_generator=NetworkGenerator, PSO=PSO):
         self.pso_params = pso_params
         self.net_params = net_params
         self.path = path
         self.debugMode = debugMode
+        self.sampleMode = sampleMode
 
         self.pso = None
         self.network = None
@@ -54,7 +55,7 @@ class Experiment:
 
     def load_data(self, path):
         current_dir = os.getcwd() + '/'
-        self.inputs, self.ideal = read_data(current_dir, path)
+        self.inputs, self.ideal = read_data(current_dir, path, self.sampleMode)
 
         if (self.debugMode):
             self.inputs = self.inputs.head(10)

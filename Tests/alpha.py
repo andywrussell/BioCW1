@@ -8,201 +8,192 @@ import pandas as pd
 from utils.helpers import MSE, read_data
 import os
 
-print("\nExperiment 1")
-print("=======================")
+#Swarmsize - Start with 50 - typical is 10 - 100 according to lecture slides
+#alpha - start a 1
+#beta, gamma, delta typically sum to 4
+#acorrding to https://cs.gmu.edu/~sean/book/metaheuristics/Essentials.pdf delta is often set to 0
+#explained on page 57
+#gamma is often midpoint between delts and beta
+#start with weight boundary between -1 and 1
+#initially set informants to 3 according to page 5 of http://clerc.maurice.free.fr/pso/SPSO_descriptions.pdf
 
-params_pso = {
-    "swarmsize": 50,
-    "alpha": 1,
-    "beta": 1,
-    "gamma": 1,
-    "delta": 0,
-    "jumpsize": 1,
-    "act_bound": 5,
-    "weight_bound": 0,
-    "num_informants": 5,
-    "max_runs": 100
-}
+#Run the baseline expriment on each data set to see results
 
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":2,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":2,
-        "node_count": 1,
-        "activations:":[]
+from ANN.neuralNet import NeuralNet
+from ANN.layer import Layer
+from ANN.networkGenerator import NetworkGenerator
+from experiments import Experiment
+from PSO.pso import PSO
+import numpy as np
+import pandas as pd
+from utils.helpers import MSE, read_data
+import os
+
+#Swarmsize - Start with 50 - typical is 10 - 100 according to lecture slides
+#alpha - start a 1
+#beta, gamma, delta typically sum to 4
+#acorrding to https://cs.gmu.edu/~sean/book/metaheuristics/Essentials.pdf delta is often set to 0
+#explained on page 57
+#gamma is often midpoint between delts and beta
+#start with weight boundary between -1 and 1
+#initially set informants to 3 according to page 5 of http://clerc.maurice.free.fr/pso/SPSO_descriptions.pdf
+
+#Run the baseline expriment on each data set to see results
+
+def run_alpha():
+    print("\Swarmsize Alpha")
+    print("=======================")
+
+    params_pso = {
+        "swarmsize": 40,
+        "alpha": 0,
+        "beta": 2.05,
+        "gamma": 2.05,
+        "delta": 0,
+        "jumpsize": 1,
+        "act_bound": 5,
+        "weight_bound": 10,
+        "bound_strat": 1,
+        "num_informants": 3,
+        "vel_range": 1,
+        "max_runs": 1000,
+        "informants_strat": 2
     }
-}
 
-
-experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-experiment1.run()
-
-
-print("\nExperiment 2")
-print("=======================")
-
-params_pso = {
-    "swarmsize": 50,
-    "alpha": 0.5,
-    "beta": 0.5,
-    "gamma": 0.5,
-    "delta": 0.5,
-    "jumpsize": 0.5,
-    "act_bound": 5,
-    "weight_bound": 0.5,
-    "num_informants": 50,
-    "max_runs": 100
-}
-
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":8,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":8,
-        "node_count": 1,
-        "activations:":[]
+    net_layers = {
+        "layer1": {
+            "input_count":1,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count": 1,
+            "activations:":[]
+        }
     }
-}
 
-exp2 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-exp2.run()
+    cubic_optimal_alpha = 0
+    cubic_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        cubic_optimal_size = 0
+        cubic_best = None
+        for i in range(0, 10):      
+            params_pso["alpha"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (cubic_best == None or experiment1.pso.best.fitness < cubic_best):
+                cubic_best = experiment1.pso.best.fitness
+                cubic_optimal_alpha = params_pso["alpha"]
+        print("\nRun ", j, "best alpha", cubic_optimal_alpha, " produced", cubic_best)
 
+    print("cubic optimal alpha ", cubic_optimal_alpha, " produced", cubic_best)
 
-print("\nExperiment 3")
-print("=======================")
+    print("\Swarmsize Linear")
+    print("=======================")
+    linear_optimal_alpha = 0
+    linear_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        linear_optimal_size = 0
+        linear_best = None
+        for i in range(0, 10):      
+            params_pso["alpha"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (linear_best == None or experiment1.pso.best.fitness < linear_best):
+                linear_best = experiment1.pso.best.fitness
+                linear_optimal_alpha = params_pso["alpha"]
+        print("\nRun ", j, "best alpha", linear_optimal_alpha, " produced", linear_best)
 
-params_pso = {
-    "swarmsize": 100,
-    "alpha": 0.5,
-    "beta": 0.5,
-    "gamma": 1,
-    "delta": 0,
-    "jumpsize": 0.9,
-    "act_bound": 5,
-    "weight_bound": 0,
-    "num_informants": 50,
-    "max_runs": 100
-}
+    print("linear optimal alpha ", linear_optimal_alpha, " produced", linear_best)
 
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":10,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":10,
-        "node_count": 1,
-        "activations:":[]
+    print("\Swarmsize Sine")
+    print("=======================")    
+    sine_optimal_alpha = 0
+    sine_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        sine_optimal_size = 0
+        sine_best = None
+        for i in range(0, 10):      
+            params_pso["alpha"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (sine_best == None or experiment1.pso.best.fitness < sine_best):
+                sine_best = experiment1.pso.best.fitness
+                sine_optimal_alpha = params_pso["alpha"]
+        print("\nRun ", j, "best alpha", sine_optimal_alpha, " produced", sine_best)
+
+    print("sine optimal alpha ", sine_optimal_alpha, " produced", sine_best)
+
+    print("\Swarmsize Tanh")
+    print("=======================")
+    tanh_optimal_alpha = 0
+    tanh_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        tanh_optimal_size = 0
+        tanh_best = None
+        for i in range(0, 10):      
+            params_pso["alpha"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (tanh_best == None or experiment1.pso.best.fitness < tanh_best):
+                tanh_best = experiment1.pso.best.fitness
+                tanh_optimal_alpha = params_pso["alpha"]
+        print("\nRun ", j, "best alpha", tanh_optimal_alpha, " produced", tanh_best)
+
+    print("tanh optimal alpha ", tanh_optimal_alpha, " produced", tanh_best)
+
+    net_layers = {
+        "layer1": {
+            "input_count":2,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count": 1,
+            "activations:":[]
+        }
     }
-}
 
+    print("\Swarmsize Complex")
+    print("=======================")
+    complex_optimal_alpha = 0
+    complex_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        complex_optimal_size = 0
+        complex_best = None
+        for i in range(0, 10):      
+            params_pso["alpha"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="1in_complex.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (complex_best == None or experiment1.pso.best.fitness < complex_best):
+                complex_best = experiment1.pso.best.fitness
+                complex_optimal_alpha = params_pso["alpha"]
+        print("\nRun ", j, "best alpha", complex_optimal_alpha, " produced", complex_best)
 
-exp3 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-exp3.run()
+    print("complex optimal alpha ", complex_optimal_alpha, " produced", complex_best)
 
-print("\nExperiment 4")
-print("=======================")
-params_pso = {
-    "swarmsize": 50,
-    "alpha": 1,
-    "beta": 0,
-    "gamma": 0,
-    "delta": 0,
-    "jumpsize": 0.9,
-    "act_bound": 5,
-    "weight_bound": 0,
-    "num_informants": 5,
-    "max_runs": 100
-}
+    print("\Swarmsize XOR")
+    print("=======================")
+    xor_optimal_size = 0
+    xor_best = None
+    for j in range(0, 10):
+        print("\nRun ", j)
+        xor_optimal_size = 0
+        xor_best = None
+        for i in range(0, 10):      
+            params_pso["swarmsize"] += 10
+            experiment1 = Experiment(params_pso, net_layers, path="2in_xor.txt", debugMode=False, sampleMode=True)
+            experiment1.run()
+            if (xor_best == None or experiment1.pso.best.fitness < xor_best):
+                xor_best = experiment1.pso.best.fitness
+                xor_optimal_size = params_pso["swarmsize"]
+            print("\nRun ", j, "best size", xor_optimal_size, " produced", xor_best)
 
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":100,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":100,
-        "node_count": 1,
-        "activations:":[]
-    }
-}
-
-exp4 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-exp4.run()
-
-print("\nExperiment 5")
-print("=======================")
-
-params_pso = {
-    "swarmsize": 150,
-    "alpha": 0.2,
-    "beta": 0.2,
-    "gamma": 0.2,
-    "delta": 0,
-    "jumpsize": 0.1,
-    "act_bound": 5,
-    "weight_bound": 0,
-    "num_informants": 10,
-    "max_runs": 40
-}
-
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":30,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":30,
-        "node_count": 8,
-        "activations:":[]
-    },
-    "layer3": {
-        "input_count":8,
-        "node_count": 1,
-        "activations:":[]
-    }
-}
-
-exp5 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False)
-exp5.run()
-
-print("\nExperiment 6")
-print("=======================")
-params_pso = {
-    "swarmsize": 50,
-    "alpha": 1,
-    "beta": 1,
-    "gamma": 1,
-    "delta": 0,
-    "jumpsize": 0.1,
-    "act_bound": 5,
-    "weight_bound": 0,
-    "num_informants": 5,
-    "max_runs": 100
-}
-
-net_layers = {
-    "layer1": {
-        "input_count":1,
-        "node_count":5,
-        "activations": []
-    },
-    "layer2": {
-        "input_count":5,
-        "node_count": 1,
-        "activations:":[]
-    }
-}
-
-exp6 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-exp6.run()
+    print("xor optimal size ", xor_optimal_size, " produced", xor_best)

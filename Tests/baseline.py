@@ -24,18 +24,18 @@ def run_baseline():
     print("=======================")
 
     params_pso = {
-        "swarmsize": 50,
+        "swarmsize": 70,
         "alpha": 1,
-        "beta": 2.67,
-        "gamma": 1.33,
+        "beta": 2,
+        "gamma": 2,
         "delta": 0,
         "jumpsize": 1,
         "act_bound": 5,
         "weight_bound": 10,
-        "bound_strat": 3,
+        "bound_strat": 2,
         "num_informants": 3,
         "vel_range": 1,
-        "max_runs": 100,
+        "max_runs": 1000,
         "informants_strat": 2
     }
 
@@ -52,33 +52,48 @@ def run_baseline():
         }
     }
 
-    experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=True)
-    experiment1.run()
+    exp1 = 0
+    for i in range(0, 10):
+        print("\nRun ", i)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1.run()
+        exp1 += experiment1.pso.best.fitness
 
+    print("\nMse for base on cubic", exp1/10)
 
     print("\nBase Linear")
     print("=======================")
+    exp2 = 0
+    for i in range(0, 10):
+        print("\nRun ", i)
+        experiment2 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2.run()
+        exp2 += experiment2.pso.best.fitness
 
-    exp2 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=True)
-    exp2.run()
-
+    print("\nMse for base on linear", exp2/10)
 
     print("\nBase Sine")
     print("=======================")
+    exp3 = 0
+    for i in range(0, 10):
+        print("Run ", i, "\n")
+        experiment3 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
+        experiment3.run()
+        exp3 += experiment3.pso.best.fitness
 
-
-    exp3 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=True)
-    exp3.run()
+    print("\nMse for base on Sine", exp3/10)
 
     print("\nBase Tanh")
     print("=======================")
+    exp4 = 0
+    for i in range(0, 10):
+        print("Run ", i, "\n")
+        experiment4 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=False, sampleMode=True)
+        experiment4.run()
+        exp4 += experiment4.pso.best.fitness
 
+    print("\nMse for base on Tanh", exp4/10)    
 
-    exp4 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=True)
-    exp4.run()
-
-    print("\nBase Complex")
-    print("=======================")
 
     net_layers = {
         "layer1": {
@@ -93,11 +108,24 @@ def run_baseline():
         }
     }
 
-    exp5 = Experiment(params_pso, net_layers, path="2in_complex.txt", debugMode=True)
-    exp5.run()
+    print("\nBase Complex")
+    print("=======================")
+    exp5 = 0
+    for i in range(0, 10):
+        print("\nRun ", i, "\n")
+        experiment5 = Experiment(params_pso, net_layers, path="2in_complex.txt", debugMode=False, sampleMode=True)
+        experiment5.run()
+        exp5 += experiment5.pso.best.fitness
+
+    print("\nMse for base on Complex", exp5/10)   
 
     print("\nBase XOR")
     print("=======================")
+    exp6 = 0
+    for i in range(0, 10):
+        print("Run ", i, "\n")
+        experiment6 = Experiment(params_pso, net_layers, path="2in_xor.txt", debugMode=False, sampleMode=True)
+        experiment6.run()
+        exp6 += experiment6.pso.best.fitness
 
-    exp6 = Experiment(params_pso, net_layers, path="2in_xor.txt", debugMode=True)
-    exp6.run()
+    print("\nMse for base on Complex", exp6/10)   

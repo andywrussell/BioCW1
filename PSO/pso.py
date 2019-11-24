@@ -21,7 +21,8 @@ class PSO:
         self.weight_bound = weight_bound #boundary for weigths
         self.bound_strat = bound_strat #0 for no boundary, 1 for ignore move, 2 for set to boundary, 3 for reflect
         self.vel_range = vel_range #range for initializing velocities
-        self.best_count = 0
+        self.unchanged_count = 0
+        self.unchanged_max = 100
 
     def generate_particles(self):
         self.particles = []
@@ -83,6 +84,10 @@ class PSO:
                 self.best.best = particle.position
                 self.best.outputs = particle.outputs
         
+        self.unchanged_count += 1
+        if (best_changed):
+            self.unchanged_count = 0
+
         # use adaptive random topology
         if self.informant_strat == 1:
             self.assign_informants()
@@ -162,16 +167,17 @@ class PSO:
         run = 1
 
         progress_bar = tqdm(range(self.max_runs))
-        for i in progress_bar:
+        for i in (progress_bar):
             if self.best == None or (self.best.fitness > 0.001):
                 self.asses_fitness()
                 self.update_velocity()
                 self.update_positions()
-                cur_best = self.best.fitness
                 progress_bar.set_description(" Run {}/{} | Best fitness = {}".format(run, self.max_runs, round(self.best.fitness, 4)))
                 run += 1
+                if self.unchanged_count == self.unchanged_max:
+                    break
             else:
-                break;            
+                break            
             
 
             
