@@ -167,13 +167,13 @@ class PSO:
         self.assign_informants()
         run = 1
 
-        progress_bar = tqdm(range(self.max_runs))
-        for i in (progress_bar):
+        #progress_bar = tqdm(range(self.max_runs))
+        for i in (range(self.max_runs)):
             if self.best == None or (self.best.fitness > 0.001):
                 self.asses_fitness()
                 self.update_velocity()
                 self.update_positions()
-                progress_bar.set_description(" Run {}/{} | Best fitness = {}".format(run, self.max_runs, round(self.best.fitness, 4)))
+               # progress_bar.set_description(" Run {}/{} | Best fitness = {}".format(run, self.max_runs, round(self.best.fitness, 4)))
                 run += 1
                 if self.unchanged_count == self.unchanged_max:
                     break

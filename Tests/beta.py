@@ -25,7 +25,7 @@ def run_beta():
 
     params_pso = {
         "swarmsize": 40,
-        "alpha": 0,
+        "alpha": 1,
         "beta": 0,
         "gamma": 4.1,
         "delta": 0,
@@ -42,20 +42,27 @@ def run_beta():
     net_layers = {
         "layer1": {
             "input_count":1,
-            "node_count":2,
+            "node_count":1,
             "activations": []
-        },
-        "layer2": {
-            "input_count":2,
-            "node_count": 1,
-            "activations:":[]
         }
     }
+
+    # net_layers = {
+    #     "layer1": {
+    #         "input_count":1,
+    #         "node_count":2,
+    #         "activations": []
+    #     },
+    #     "layer2": {
+    #         "input_count":2,
+    #         "node_count": 1,
+    #         "activations:":[]
+    #     }
+    # }
 
     best_gamma = 0
     best_beta = 0
     best_error = None
-
 
     for j in range(0, 10):
         run_beta = 0

@@ -9,11 +9,13 @@ from PSO.pso import PSO
 import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
-from Tests import baseline, swarmsize, alpha
+from Tests import baseline, swarmsize, alpha, beta
 from Tests.networks.net_architectures import net_simple_1, net_simple_2, net_complex
 import os
 
-baseline.run_baseline()
+beta.run_beta()
+
+#baseline.run_baseline()
 #swarmsize.run_swarmsize()
 #alpha.run_alpha()
 
