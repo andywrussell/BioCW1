@@ -41,7 +41,7 @@ import os
 #Run the baseline expriment on each data set to see results
 
 def run_beta():
-    print("\Swarmsize Alpha")
+    print("n\Swarmsize Alpha")
     print("=======================")
 
     params_pso = {

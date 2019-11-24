@@ -21,7 +21,7 @@ import os
 #Run the baseline expriment on each data set to see results
 
 def run_alpha():
-    print("\Swarmsize Alpha")
+    print("\nSwarmsize Alpha")
     print("=======================")
 
     params_pso = {
@@ -57,7 +57,7 @@ def run_alpha():
 
     print("cubic optimal alpha ", cubic_optimal_alpha, " produced", cubic_best)
 
-    print("\Swarmsize Linear")
+    print("\nSwarmsize Linear")
     print("=======================")
     linear_optimal_alpha = 0
     linear_best = None
@@ -76,7 +76,7 @@ def run_alpha():
 
     print("linear optimal alpha ", linear_optimal_alpha, " produced", linear_best)
 
-    print("\Swarmsize Sine")
+    print("\nSwarmsize Sine")
     print("=======================")    
     sine_optimal_alpha = 0
     sine_best = None
@@ -95,7 +95,7 @@ def run_alpha():
 
     print("sine optimal alpha ", sine_optimal_alpha, " produced", sine_best)
 
-    print("\Swarmsize Tanh")
+    print("\nSwarmsize Tanh")
     print("=======================")
     tanh_optimal_alpha = 0
     tanh_best = None
@@ -115,7 +115,7 @@ def run_alpha():
     print("tanh optimal alpha ", tanh_optimal_alpha, " produced", tanh_best)
 
 
-    print("\Swarmsize Complex")
+    print("\nSwarmsize Complex")
     print("=======================")
     complex_optimal_alpha = 0
     complex_best = None
@@ -134,7 +134,7 @@ def run_alpha():
 
     print("complex optimal alpha ", complex_optimal_alpha, " produced", complex_best)
 
-    print("\Swarmsize XOR")
+    print("\nSwarmsize XOR")
     print("=======================")
     xor_optimal_size = 0
     xor_best = None
