@@ -9,8 +9,8 @@ class Particle:
         self.inputs = inputs
         self.outputs = []
         self.ideal = ideal
+        self.best_list = [position]
         self.best = position
-       # self.network.fire_net() 
         self.best_fitness = None
         self.asses_fitness()
 
@@ -32,6 +32,7 @@ class Particle:
         #otherwise get distance from ideal and see if it is better than current best
         if (self.best_fitness == None or self.fitness < self.best_fitness):
             self.best = self.position
+            self.best_list.append(self.position)
             self.best_fitness = self.fitness            
     
                 
@@ -42,7 +43,7 @@ class Particle:
                 inf_best = inf
 
         if inf_best.best_fitness < self.best_fitness:
-            return inf_best.best
+            return inf_best.best_list[-2]
         else:
-            return self.best
+            return self.best_list[-2]
 

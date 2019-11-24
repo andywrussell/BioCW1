@@ -32,7 +32,7 @@ def run_baseline():
         "jumpsize": 1,
         "act_bound": 5,
         "weight_bound": 10,
-        "bound_strat": 2,
+        "bound_strat": 1,
         "num_informants": 3,
         "vel_range": 1,
         "max_runs": 1000,
