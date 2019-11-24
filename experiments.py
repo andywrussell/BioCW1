@@ -9,6 +9,17 @@ Class Experiment takes some parameters and runs a pso.
 """
 class Experiment:
     def __init__(self, pso_params, net_params, path, debugMode=True, sampleMode=False, net_generator=NetworkGenerator, PSO=PSO):
+        """
+        Params
+        ======
+        pso_params: a dictionary with different PSO parameters.
+        net_params: a dictionary with different network parameters.
+        path: The path of the dataset that we want to load.
+        debugMode: It only takes the 10 first features of the dataset to improve speed of training.
+        sampleMode: takes a random sample from the dataset and uses it for training.
+        pso: a pso instance
+        network: a network instance
+        """
         self.pso_params = pso_params
         self.net_params = net_params
         self.path = path
@@ -33,6 +44,9 @@ class Experiment:
                 node_count=val["node_count"], activations=[])
     
     def build_pso(self, PSO):
+        """
+        Load the parameters from the dictionary into the PSO.
+        """
         assert len(self.network.layers) != 0, "Network must be initialized before initializing the pso"
 
         self.pso = PSO(
@@ -54,6 +68,9 @@ class Experiment:
             inputs=self.inputs)
 
     def load_data(self, path):
+        """
+        Load the data from a specified path.
+        """
         current_dir = os.getcwd() + '/'
         self.inputs, self.ideal = read_data(current_dir, path, self.sampleMode)
 
@@ -62,6 +79,10 @@ class Experiment:
             self.ideal = self.ideal.head(10)
         
     def print_results(self, outputs=True, net=False):
+        """
+        * outputs=True -> prints the top 10 outputs comparing them to the true labels.
+        * net=TRUE -> Prints the network in a table version.
+        """
         # Print outputs
         if (outputs):
             results = self.pso.best.outputs
@@ -73,5 +94,8 @@ class Experiment:
             self.pso.best.network.print_net()
 
     def run(self):
+        """
+        Run the experiment.
+        """
         self.pso.run_algo()
         self.print_results()

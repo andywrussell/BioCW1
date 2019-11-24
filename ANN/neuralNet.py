@@ -22,12 +22,21 @@ class NeuralNet:
         self.activation_idx = []
 
     def add_layer(self, input_count, node_count, activations=[]):
+        """
+        Adds a layer to the network.
+            * input_count: number of inputs it will take.
+            * node_count: number of nodes for the layer.
+            * Activations: activations for each neuron. If none passed they get assigned randomly.
+        """
         layer = Layer(input_count , node_count, activations)
         layer.build_layer()
         
         self.layers.append(layer)
 
     def fire_net(self, layer_input):
+        """
+        Fires an input through the network and gives an output. 
+        """
         for layer in self.layers:
             input_with_bias = np.append(layer_input, [1])
             layer.fire_layer(input_with_bias)
