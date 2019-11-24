@@ -9,9 +9,9 @@ class Particle:
         * ideal: desired output of network
         * inputs: input of network
         """
-
-        self.position_list = [position] #all of the positions traversed so far
-        self.velocity_list = [velocity] #all of the velocities used so fat
+        
+        self.position_list = [position] #all of the positions so far
+        self.velocity_list = [velocity] #all of the velocities used so far
         self.network = network  
         self.position = position
         self.velocity = velocity
@@ -53,6 +53,9 @@ class Particle:
     
                 
     def informants_best(self):
+        """
+        Get the previous best position from all informants including this particle
+        """
         inf_best = self.informants[0]        
         for inf in self.informants:
             if (inf.best_fitness < inf_best.best_fitness):
