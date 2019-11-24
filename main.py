@@ -9,12 +9,14 @@ from PSO.pso import PSO
 import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
-from Tests import baseline, swarmsize
+from Tests import baseline, swarmsize, alpha
 import os
 
 #baseline.run_baseline()
 #swarmsize.run_swarmsize()
+alpha.run_alpha()
 
+"""
 params_pso = {
     "swarmsize": 100,
     "alpha": 1,
@@ -33,9 +35,9 @@ params_pso = {
 
 net_layers = {
     "layer1": {
-    "input_count":1,
-    "node_count":2,
-    "activations": []
+        "input_count":1,
+        "node_count":2,
+        "activations": []
     },
     "layer2": {
         "input_count":2,
@@ -53,3 +55,4 @@ net_layers = {
 
 experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
 experiment1.run()
+"""
