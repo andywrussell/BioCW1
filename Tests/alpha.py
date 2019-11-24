@@ -6,7 +6,7 @@ from PSO.pso import PSO
 import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
-from Tests.networks.net_architectures import net_simple, net_complex_1, net_complex_2
+from Tests.networks.net_architectures import net_simple_1, net_simple_2, net_complex
 import os
 
 #Swarmsize - Start with 50 - typical is 10 - 100 according to lecture slides
@@ -48,7 +48,7 @@ def run_alpha():
         cubic_best = None
         for i in range(0, 10):      
             params_pso["alpha"] += 10
-            experiment1 = Experiment(params_pso, net_simple, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_simple_1, path="1in_cubic.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (cubic_best == None or experiment1.pso.best.fitness < cubic_best):
                 cubic_best = experiment1.pso.best.fitness
@@ -67,7 +67,7 @@ def run_alpha():
         linear_best = None
         for i in range(0, 10):      
             params_pso["alpha"] += 10
-            experiment1 = Experiment(params_pso, net_simple, path="1in_linear.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_simple_1, path="1in_linear.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (linear_best == None or experiment1.pso.best.fitness < linear_best):
                 linear_best = experiment1.pso.best.fitness
@@ -86,7 +86,7 @@ def run_alpha():
         sine_best = None
         for i in range(0, 10):      
             params_pso["alpha"] += 10
-            experiment1 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_simple_1, path="1in_sine.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (sine_best == None or experiment1.pso.best.fitness < sine_best):
                 sine_best = experiment1.pso.best.fitness
@@ -105,7 +105,7 @@ def run_alpha():
         tanh_best = None
         for i in range(0, 10):      
             params_pso["alpha"] += 10
-            experiment1 = Experiment(params_pso, net_simple, path="1in_tanh.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_simple_1, path="1in_tanh.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (tanh_best == None or experiment1.pso.best.fitness < tanh_best):
                 tanh_best = experiment1.pso.best.fitness
@@ -125,7 +125,7 @@ def run_alpha():
         complex_best = None
         for i in range(0, 10):      
             params_pso["alpha"] += 10
-            experiment1 = Experiment(params_pso, net_complex_1, path="2in_complex.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_complex, path="2in_complex.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (complex_best == None or experiment1.pso.best.fitness < complex_best):
                 complex_best = experiment1.pso.best.fitness
@@ -144,7 +144,7 @@ def run_alpha():
         xor_best = None
         for i in range(0, 10):      
             params_pso["swarmsize"] += 10
-            experiment1 = Experiment(params_pso, net_complex_2, path="2in_xor.txt", debugMode=False, sampleMode=True)
+            experiment1 = Experiment(params_pso, net_complex, path="2in_xor.txt", debugMode=False, sampleMode=True)
             experiment1.run()
             if (xor_best == None or experiment1.pso.best.fitness < xor_best):
                 xor_best = experiment1.pso.best.fitness

@@ -12,9 +12,10 @@ def HyperbolicActivator(in_val) :
 def CosineActivator(in_val) :
     return math.cos(in_val)
 
-##This one doesnt work
+
 def GaussianActivator(in_val) : 
     return math.exp(-((in_val**2)/2))
+
 
 def ReLUActivator(in_val) :
     if in_val < 0:

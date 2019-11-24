@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
 from Tests import baseline, swarmsize, alpha
+from Tests.networks.net_architectures import net_simple_1, net_simple_2, net_complex
 import os
 
 #baseline.run_baseline()
@@ -38,8 +39,18 @@ net_layers = {
         "node_count":2,
         "activations": []
     },
-}    
+    "layer2": {
+        "input_count":2,
+        "node_count": 2,
+        "activations:":[]
+    },
+    "layer3": {
+        "input_count":2,
+        "node_count": 1,
+        "activations:":[]
+    }
+}
 
-
-experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
+experiment1 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=False, sampleMode=True)
 experiment1.run()
+
