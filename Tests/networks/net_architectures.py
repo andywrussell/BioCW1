@@ -1,4 +1,4 @@
-# net_simple 1 Good for linear
+# net_simple 1 Good for linear, sine, and cubic
 net_simple_1 = {
     "layer1": {
         "input_count":1,
@@ -7,7 +7,7 @@ net_simple_1 = {
     }
 }
 
-
+#Used for xor and tanh
 net_simple_2 = {
     "layer1": {
         "input_count":1,
@@ -21,8 +21,7 @@ net_simple_2 = {
     }
 }
 
-# Works well with 2in_complex.txt
-# Works well with 2in_xor.txt
+# Used for complex
 net_complex = {
     "layer1": {
         "input_count":2,
