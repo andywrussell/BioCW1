@@ -19,27 +19,6 @@ import os
 
 #Run the baseline expriment on each data set to see results
 
-from ANN.neuralNet import NeuralNet
-from ANN.layer import Layer
-from ANN.networkGenerator import NetworkGenerator
-from experiments import Experiment
-from PSO.pso import PSO
-import numpy as np
-import pandas as pd
-from utils.helpers import MSE, read_data
-import os
-
-#Swarmsize - Start with 50 - typical is 10 - 100 according to lecture slides
-#alpha - start a 1
-#beta, gamma, delta typically sum to 4
-#acorrding to https://cs.gmu.edu/~sean/book/metaheuristics/Essentials.pdf delta is often set to 0
-#explained on page 57
-#gamma is often midpoint between delts and beta
-#start with weight boundary between -1 and 1
-#initially set informants to 3 according to page 5 of http://clerc.maurice.free.fr/pso/SPSO_descriptions.pdf
-
-#Run the baseline expriment on each data set to see results
-
 def run_beta():
     print("n\Swarmsize Alpha")
     print("=======================")

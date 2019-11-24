@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from utils.helpers import MSE, read_data
 from Tests import baseline, swarmsize, alpha
+from Tests.networks.net_architectures import net_simple_1, net_simple_2, net_complex
 import os
 
 #baseline.run_baseline()
@@ -53,6 +54,6 @@ net_layers = {
 
 
 
-experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
+experiment1 = Experiment(params_pso, net_complex, path="2in_xor.txt", debugMode=False, sampleMode=True)
 experiment1.run()
 """
