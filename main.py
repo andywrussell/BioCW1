@@ -14,20 +14,19 @@ import os
 
 #baseline.run_baseline()
 #swarmsize.run_swarmsize()
-alpha.run_alpha()
+#alpha.run_alpha()
 
-"""
 params_pso = {
-    "swarmsize": 50,
+    "swarmsize": 40,
     "alpha": 1,
-    "beta": 2.6,
-    "gamma": 1.5,
+    "beta": 2.05,
+    "gamma": 2.05,
     "delta": 0,
     "jumpsize": 1,
     "act_bound": 5,
     "weight_bound": 20,
     "bound_strat": 3,
-    "num_informants": 5,
+    "num_informants": 3,
     "vel_range": 1,
     "max_runs": 1000,
     "informants_strat": 2
@@ -35,40 +34,12 @@ params_pso = {
 
 net_layers = {
     "layer1": {
-<<<<<<< HEAD
-    "input_count":1,
-    "node_count":1,
-    "activations": []
-=======
         "input_count":1,
         "node_count":2,
         "activations": []
     },
-    "layer2": {
-        "input_count":2,
-        "node_count": 2,
-        "activations:":[]
-    },
-    "layer3": {
-        "input_count":2,
-        "node_count": 1,
-        "activations:":[]
->>>>>>> 91a26e42f4d6214626219bf766234c88e5285d3d
-    }
-}
+}    
 
-experiment1 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=False, sampleMode=True)
+
+experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
 experiment1.run()
-
-print(experiment1.pso.particles[0].best_list)
-print(experiment1.pso.particles[0].best_list[-1])
-
-<<<<<<< HEAD
-for particle in experiment1.pso.particles[0].informants:
-    print(particle.best_list)
-    print(particle.best_list[-2])
-=======
-experiment1 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
-experiment1.run()
-"""
->>>>>>> 91a26e42f4d6214626219bf766234c88e5285d3d

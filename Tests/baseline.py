@@ -24,10 +24,10 @@ def run_baseline():
     print("=======================")
 
     params_pso = {
-        "swarmsize": 70,
+        "swarmsize": 50,
         "alpha": 1,
-        "beta": 2,
-        "gamma": 2,
+        "beta": 2.05,
+        "gamma": 2.05,
         "delta": 0,
         "jumpsize": 1,
         "act_bound": 5,
@@ -38,6 +38,49 @@ def run_baseline():
         "max_runs": 1000,
         "informants_strat": 2
     }
+
+
+    net_layers = {
+        "layer1": {
+            "input_count":1,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count": 1,
+            "activations:":[]
+        }
+    }    
+
+    exp1 = 0
+    for i in range(0, 10):
+        print("\nRun ", i)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1.run()
+        exp1 += experiment1.pso.best.fitness
+
+    print("\nMse for base on cubic", exp1/10)
+
+    net_layers = {
+        "layer1": {
+            "input_count":1,
+            "node_count":1,
+            "activations": []
+        }
+    }
+
+    print("\nBase Linear")
+    print("=======================")
+    exp2 = 0
+    for i in range(0, 10):
+        print("\nRun ", i)
+        experiment2 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2.run()
+        exp2 += experiment2.pso.best.fitness
+
+    print("\nMse for base on linear", exp2/10)
+
 
     net_layers = {
         "layer1": {
@@ -51,26 +94,6 @@ def run_baseline():
             "activations:":[]
         }
     }
-
-    exp1 = 0
-    for i in range(0, 10):
-        print("\nRun ", i)
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
-        experiment1.run()
-        exp1 += experiment1.pso.best.fitness
-
-    print("\nMse for base on cubic", exp1/10)
-
-    print("\nBase Linear")
-    print("=======================")
-    exp2 = 0
-    for i in range(0, 10):
-        print("\nRun ", i)
-        experiment2 = Experiment(params_pso, net_layers, path="1in_linear.txt", debugMode=False, sampleMode=True)
-        experiment2.run()
-        exp2 += experiment2.pso.best.fitness
-
-    print("\nMse for base on linear", exp2/10)
 
     print("\nBase Sine")
     print("=======================")
