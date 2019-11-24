@@ -13,9 +13,9 @@ from Tests import baseline, swarmsize, alpha, beta, informants
 from Tests.networks.net_architectures import net_simple_1, net_simple_2, net_complex
 import os
 
-#beta.run_beta()
+beta.run_beta()
 
-informants.run_informant_strat()
+#informants.run_informant_strat()
 
 #baseline.run_baseline()
 #swarmsize.run_swarmsize()
