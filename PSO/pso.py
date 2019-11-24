@@ -16,7 +16,7 @@ class PSO:
         self.ideal = ideal
         self.inputs = inputs
         self.max_runs = max_runs
-        self.best = None #this is probably not a good idea
+        self.best = None 
         self.act_bound = act_bound #activation boundary
         self.weight_bound = weight_bound #boundary for weigths
         self.bound_strat = bound_strat #0 for no boundary, 1 for ignore move, 2 for set to boundary, 3 for reflect
@@ -82,6 +82,7 @@ class PSO:
                 self.best.fitness = particle.fitness
                 self.best.best_fitness = particle.best_fitness
                 self.best.best = particle.position
+                self.best.best_list.append(particle.position)
                 self.best.outputs = particle.outputs
         
         self.unchanged_count += 1
@@ -95,10 +96,10 @@ class PSO:
             self.assign_informants()
                 
     def update_velocity(self): 
-        best_pos = self.best.position                        
+        best_pos = self.best.best_list[-2]                        
         
         for particle in self.particles:
-            part_best = particle.best
+            part_best = particle.best_list[-2]
             inf_best = particle.informants_best()
             particle_vel = particle.velocity
             new_vel = []
