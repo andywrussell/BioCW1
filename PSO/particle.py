@@ -1,21 +1,34 @@
 class Particle:
     def __init__(self, network, position, velocity, ideal, inputs):
-        #the index of a position or velocity in the list corresponds to a timestamp
-        self.position_list = [position]
-        self.velocity_list = [velocity]
-        self.network = network
+                """
+        Params
+        ======
+        * network: ANN that will be trained by this particle
+        * position: starting position of the particle (flattend ANN)
+        * velocity: initial velocity
+        * ideal: desired output of network
+        * inputs: input of network
+        """
+
+        self.position_list = [position] #all of the positions traversed so far
+        self.velocity_list = [velocity] #all of the velocities used so fat
+        self.network = network  
         self.position = position
         self.velocity = velocity
         self.inputs = inputs
-        self.outputs = []
+        self.outputs = []   #current output of ann
         self.ideal = ideal
-        self.best_list = [position]
-        self.best = position
-        self.best_fitness = None
+        self.best_list = [position] #list of all the best positions
+        self.best = position #current best position
+        self.best_fitness = None #current error for best position
         self.asses_fitness()
 
 
     def update_position(self, new_pos):
+        """
+        Update the particle velocity
+        Add the new position to the list and update the network
+        """
         self.position_list.append(new_pos)        
         self.position = new_pos
         self.network.flatten_net()
@@ -23,6 +36,9 @@ class Particle:
         self.network.unflatten_net()
         
     def update_velocity(self, new_vel):
+        """
+        Update the particle velocity
+        """
         self.velocity_list.append(new_vel)
         self.velocity = new_vel
 

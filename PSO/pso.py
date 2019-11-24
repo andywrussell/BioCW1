@@ -3,37 +3,65 @@ import numpy as np
 from tqdm import tqdm
 
 class PSO:
-    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, act_bound, weight_bound = 0, bound_strat = 3, vel_range = 1, informant_strat = 0)  :
-        self.net_generator = net_generator # Class that returns a neural net with given layers.
-        self.swarmsize = swarmsize #size of the swarm
-        self.alpha = alpha #proportion of velocity to be retained
-        self.beta = beta #proportion of personal best to be retained
-        self.gamma = gamma #proportion of the 'informants' best to be retained
-        self.delta = delta #proportion of global best to be retained
-        self.jumpsize = jumpsize #jumpsize
-        self.num_informants = num_informants #number of randomly selected informants per particle
-        self.informant_strat = informant_strat #different strategies for the informants 0 random static, 1 random change after each, 2 random change if no new best, 3 ring
+    def __init__ (self, net_generator, swarmsize, alpha, beta, gamma, delta, jumpsize, ideal, inputs, num_informants, max_runs, act_bound, weight_bound = 0, bound_strat = 3, vel_range = 1, informant_strat = 0):
+        """
+        Params
+        ======
+        * net_generator: Class that returns a neural net with given layers
+        * swarmsize: size of swarm/number of particles for the PSO
+        * alpha: proportion of current velocity to be retained when updating the velocity of a particle (typically 1)
+        * beta: proportion of personal best to be retained when updating the velocity of a particle (typically 2.05)
+        * gamma: proportion of the 'informants' best to be retained when updating the velocity of the particle (typically 2.05)
+        * delta: proportion of global best to be retained when updating the velocity of the particle (typically 0)
+        * jumpsize: the speed at which the particles move through the search space (typically 1)
+        * num_informants: the number of informant particles to assign to each informant particle (typically 3).
+            Only relevant when using informant_strat 0, 1 or 2
+        * informant_strat: the strategy for initializing/updating the particle informants
+            0 - Random initialization, informants stay static through PSO run
+            1 - Random initialization, reinitialization after each iteration of algorithm
+            2 - Random initialization, reinitialization after every iteration which fails to find a new global best
+        * ideal: the desired output for the best particle
+        * inputs: the inputs which will be fed to the ANN for each particle
+        * max_runs: maximum number of runs before the PSO is terminated
+        * best: the current best particle 
+        * act_bound: the boundary limit for the activation functions of the ANN
+        * weight_bound: the boundary limit for the weights of the ANN
+        * bound_strat: strategy used to handle particles which exceed the specified boundary
+            0: ignore boundary and allow particle to float away
+            1: ignore move, retain current position inside violated dimension and assign new random velocity
+            2: set particle position to the boundary it violated and reverse velocity
+            3: bounce particle back into the search space by the distance which exceeded the boundary and reverse the velocity
+        * vel_range: set the range for the initial random velocities (usually -1 to 1)
+        """
+
+        self.net_generator = net_generator
+        self.swarmsize = swarmsize 
+        self.alpha = alpha
+        self.beta = beta 
+        self.gamma = gamma 
+        self.delta = delta 
+        self.jumpsize = jumpsize 
+        self.num_informants = num_informants
+        self.informant_strat = informant_strat
         self.ideal = ideal
         self.inputs = inputs
         self.max_runs = max_runs
         self.best = None 
-        self.act_bound = act_bound #activation boundary
-        self.weight_bound = weight_bound #boundary for weigths
-        self.bound_strat = bound_strat #0 for no boundary, 1 for ignore move, 2 for set to boundary, 3 for reflect
-        self.vel_range = vel_range #range for initializing velocities
-        self.unchanged_count = 0
-        self.unchanged_max = 100
+        self.act_bound = act_bound 
+        self.weight_bound = weight_bound 
+        self.bound_strat = bound_strat 
+        self.vel_range = vel_range
+        self.unchanged_count = 0 #number iterations without finding a new global best
+        self.unchanged_max = 100 #if unchanged_count count reaches unchanged_max terminate the algorithm
 
     def generate_particles(self):
+        """
+        Generates the number of particles according to the swarmsize
+        New instance of neural net is added to each particle with random weights and activations
+        """
+
         self.particles = []
         for i in range(self.swarmsize):
-            
-            # my_test_input = np.array([1])
-            """
-            network = NeuralNet(error_function=MSE)
-            network.add_layer(input_count=2 , node_count=4, activations=[0,1,2,2])
-            network.add_layer(input_count=4 , node_count=1, activations=[0])
-            """
             network = self.net_generator.generate_network()
             network.flatten_net()
 
@@ -52,6 +80,10 @@ class PSO:
 
 
     def assign_informants(self):
+        """
+        Assigns informants to particles according the informant_strat
+        """
+
         if (self.informant_strat == 3): #ring topology
             for i in range(0, self.swarmsize):
                 self.particles[i].informants = []
@@ -68,6 +100,12 @@ class PSO:
                     particle.informants.append(rand_inf)
                 
     def asses_fitness(self):
+        """
+        Asses the fitness of each particle individual and update the global best as required
+        If the best is unchanged increment unchanged_count and check the termination condition
+        If appropriate reassign the informants based the selected informant_strat
+        """
+
         best_changed = False
         for particle in self.particles:
             particle.asses_fitness()
@@ -95,8 +133,11 @@ class PSO:
         elif self.informant_strat == 2 and not best_changed:
             self.assign_informants()
                 
-    def update_velocity(self): 
-        best_pos = self.best.best_list[-2]                        
+    def update_velocity(self):
+        """
+        Update the velocity of each particle
+        """ 
+        best_pos = self.best.best_list[-2]  #get the previous best position                      
         
         for particle in self.particles:
             part_best = particle.best_list[-2]
@@ -118,7 +159,9 @@ class PSO:
             particle.update_velocity(new_vel)
             
     def update_positions(self):
-
+        """
+        Update the positions of each particle using the velocity according to the selected bound_strat
+        """
         for particle in self.particles:
             new_pos = particle.position + (np.dot(self.jumpsize, particle.velocity)) #use dot to multiply jumpsize by velo array
             
@@ -139,11 +182,14 @@ class PSO:
             particle.update_position(new_pos)
 
     def enforce_boundary(self, new_pos, old_pos, vel, boundary, is_activation):
+        """
+        Use the boundary strategy to handle positions outside of the search space
+        """
         if self.bound_strat == 0: #ignore boundary            
             return new_pos, vel
 
         elif self.bound_strat == 1: #ignore move
-            return old_pos, 0
+            return old_pos, np.random.uniform(-self.vel_range, self.vel_range)
 
         elif self.bound_strat == 2: #set to boundary
             if new_pos > boundary:
@@ -163,11 +209,14 @@ class PSO:
 
 
     def run_algo(self):
+        """
+        Run the PSO to optimize the ANN for the selected values
+        """
         self.generate_particles()
         self.assign_informants()
         run = 1
 
-        #progress_bar = tqdm(range(self.max_runs))
+       # progress_bar = tqdm(range(self.max_runs))
         for i in (range(self.max_runs)):
             if self.best == None or (self.best.fitness > 0.001):
                 self.asses_fitness()

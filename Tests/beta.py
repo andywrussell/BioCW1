@@ -20,9 +20,6 @@ import os
 #Run the baseline expriment on each data set to see results
 
 def run_beta():
-    print("n\Swarmsize Alpha")
-    print("=======================")
-
     params_pso = {
         "swarmsize": 40,
         "alpha": 1,
@@ -73,7 +70,7 @@ def run_beta():
         params_pso["beta"] = 0
         params_pso["gamma"] = 4.1
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -85,7 +82,7 @@ def run_beta():
         params_pso["beta"] = 0.5
         params_pso["gamma"] = 3.6
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -97,7 +94,7 @@ def run_beta():
         params_pso["beta"] = 1.0
         params_pso["gamma"] = 3.1
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -110,7 +107,7 @@ def run_beta():
         params_pso["beta"] = 1.5
         params_pso["gamma"] = 2.6
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -123,7 +120,7 @@ def run_beta():
         params_pso["beta"] = 2.05
         params_pso["gamma"] = 2.05
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -135,7 +132,7 @@ def run_beta():
         params_pso["beta"] = 2.6
         params_pso["gamma"] = 1.5
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -147,7 +144,7 @@ def run_beta():
         params_pso["beta"] =  3.1
         params_pso["gamma"] = 1.0
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -160,7 +157,7 @@ def run_beta():
         params_pso["beta"] =  0.5
         params_pso["gamma"] = 3.6
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
@@ -173,7 +170,7 @@ def run_beta():
         params_pso["beta"] =  0.0
         params_pso["gamma"] = 4.1
 
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+        experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment1.run()
 
         if (run_best == None or experiment1.pso.best.fitness < run_best):
