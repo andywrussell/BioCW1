@@ -1,4 +1,4 @@
-# net_simple 1 and net_simple 2 are for Andrew to change.
+# net_simple 1 Good for linear
 net_simple_1 = {
     "layer1": {
         "input_count":1,
@@ -6,6 +6,7 @@ net_simple_1 = {
         "activations": []
     }
 }
+
 
 net_simple_2 = {
     "layer1": {

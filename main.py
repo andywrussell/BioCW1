@@ -36,21 +36,20 @@ params_pso = {
 net_layers = {
     "layer1": {
         "input_count":1,
-        "node_count":2,
+        "node_count":3,
         "activations": []
     },
     "layer2": {
-        "input_count":2,
-        "node_count": 2,
+        "input_count":3,
+        "node_count": 5,
         "activations:":[]
     },
     "layer3": {
-        "input_count":2,
+        "input_count":5,
         "node_count": 1,
         "activations:":[]
-    }
+    }    
 }
 
-experiment1 = Experiment(params_pso, net_layers, path="1in_tanh.txt", debugMode=False, sampleMode=True)
+experiment1 = Experiment(params_pso, net_layers, path="1in_sine.txt", debugMode=False, sampleMode=True)
 experiment1.run()
-

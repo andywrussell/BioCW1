@@ -40,27 +40,27 @@ def run_baseline():
     }
 
 
-    net_layers = {
-        "layer1": {
-            "input_count":1,
-            "node_count":2,
-            "activations": []
-        },
-        "layer2": {
-            "input_count":2,
-            "node_count": 1,
-            "activations:":[]
-        }
-    }    
+    # net_layers = {
+    #     "layer1": {
+    #         "input_count":1,
+    #         "node_count":2,
+    #         "activations": []
+    #     },
+    #     "layer2": {
+    #         "input_count":2,
+    #         "node_count": 1,
+    #         "activations:":[]
+    #     }
+    # }    
 
-    exp1 = 0
-    for i in range(0, 10):
-        print("\nRun ", i)
-        experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
-        experiment1.run()
-        exp1 += experiment1.pso.best.fitness
+    # exp1 = 0
+    # for i in range(0, 10):
+    #     print("\nRun ", i)
+    #     experiment1 = Experiment(params_pso, net_layers, path="1in_cubic.txt", debugMode=False, sampleMode=True)
+    #     experiment1.run()
+    #     exp1 += experiment1.pso.best.fitness
 
-    print("\nMse for base on cubic", exp1/10)
+    # print("\nMse for base on cubic", exp1/10)
 
     net_layers = {
         "layer1": {
@@ -133,10 +133,29 @@ def run_baseline():
 
     print("\nBase Complex")
     print("=======================")
+
+    net_complex = {
+        "layer1": {
+            "input_count":2,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count":2 ,
+            "activations:":[]
+        },
+        "layer3": {
+            "input_count":2,
+            "node_count":1 ,
+            "activations:":[]
+        }
+    }
+    
     exp5 = 0
     for i in range(0, 10):
         print("\nRun ", i, "\n")
-        experiment5 = Experiment(params_pso, net_layers, path="2in_complex.txt", debugMode=False, sampleMode=True)
+        experiment5 = Experiment(params_pso, net_complex, path="2in_complex.txt", debugMode=False, sampleMode=True)
         experiment5.run()
         exp5 += experiment5.pso.best.fitness
 
@@ -147,7 +166,7 @@ def run_baseline():
     exp6 = 0
     for i in range(0, 10):
         print("Run ", i, "\n")
-        experiment6 = Experiment(params_pso, net_layers, path="2in_xor.txt", debugMode=False, sampleMode=True)
+        experiment6 = Experiment(params_pso, net_complex, path="2in_xor.txt", debugMode=False, sampleMode=True)
         experiment6.run()
         exp6 += experiment6.pso.best.fitness
 
