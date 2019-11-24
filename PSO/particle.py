@@ -1,6 +1,6 @@
 class Particle:
     def __init__(self, network, position, velocity, ideal, inputs):
-                """
+        """
         Params
         ======
         * network: ANN that will be trained by this particle
