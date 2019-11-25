@@ -15,6 +15,7 @@ import os
 
 
 #Run this to see one iteration of base experiment for xor
+#Output shows best fitness, number of iterations and the expected outputs vs the real outputs
 params_pso = {
     "swarmsize": 40,
     "alpha": 1,
