@@ -103,6 +103,19 @@ def run_baseline():
 
     print("\nMse for base on Tanh", exp4/10)    
 
+    net_layers = {
+        "layer1": {
+            "input_count":2,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count": 1,
+            "activations:":[]
+        }
+    }
+
     print("\nBase XOR")
     print("=======================")
     exp6 = 0

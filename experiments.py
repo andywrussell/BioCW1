@@ -78,7 +78,7 @@ class Experiment:
             self.inputs = self.inputs.head(10)
             self.ideal = self.ideal.head(10)
         
-    def print_results(self, outputs=False, net=False):
+    def print_results(self, outputs=True, net=False):
         """
         * outputs=True -> prints the top 10 outputs comparing them to the true labels.
         * net=TRUE -> Prints the network in a table version.
