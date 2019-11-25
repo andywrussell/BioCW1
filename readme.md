@@ -1,8 +1,12 @@
 # Optimizing a Neural Network Parameters with PSO
 
-To run the default experiments run main.py
+## Installation
 
-## Create a network.
+To run the program simply install the requirements in `requirements.txt` and run `main.py`, which will run some default experiments.
+
+## Documentation
+
+### **Create a network**
 
 Create a neural net with hidden layers.
 
@@ -10,12 +14,13 @@ Create a neural net with hidden layers.
 import ANN.NeuralNet
 
 # Create a neural network with 2 layers with 4 nodes and 1 output.
+
 network = NeuralNet()
 network.add_layer(input_count=1, node_count=4, activations=[0,2,3,4])
 network.add_layer(input_count=4, node_count=1, activations=[2])
 ```
 
-Create a NeuralNet with NetworkGenerator
+Create a NeuralNet with `NetworkGenerator`. This class lets you specify the network structure you want and then create as many instances of that network as you want.
 ```
 from ANN.networkGenerator import NetworkGenerator
 
@@ -27,34 +32,48 @@ net_generator.add_layer(input_count=4, node_count=1, activations=[2])
 # Generate a neural net with those layer parameters
 network = net_generator.generate_network()
 ```
-## Run the PSO
+### **Run the PSO**
 Create a PSO algorithm to improve your network parameters.
 
 ```
-pso = PSO(
-        net_generator = self.network,
-        swarmsize = self.pso_params["swarmsize"],
-        alpha = self.pso_params["alpha"],
-        beta = self.pso_params["beta"],
-        gamma = self.pso_params["gamma"],
-        delta = self.pso_params["delta"],
-        jumpsize = self.pso_params["jumpsize"],
-        act_bound = self.pso_params["act_bound"],
-        weight_bound = self.pso_params["weight_bound"],
-        num_informants = self.pso_params["num_informants"],
-        max_runs = self.pso_params["max_runs"],
-        ideal=self.ideal,
-        inputs=self.inputs)
+from PSO.pso import PSO
+
+# Create a network generator with 2 hidden layers.
+net_generator = NetworkGenerator()
+net_generator.add_layer(input_count=1, node_count=4, activations=[0,2,3,4])
+net_generator.add_layer(input_count=4, node_count=1, activations=[2])
+
+
+# Pass the generator to the PSO class along with other parameters.
+params_pso = PSO(
+        net_generator = net_generator,
+        swarmsize = 40,
+        alpha = 1,
+        beta = 1.18,
+        gamma = 2.92,
+        delta = 0,
+        jumpsize = 1,
+        act_bound = 5,
+        weight_bound = 10,
+        bound_strat = 1,
+        num_informants = 3,
+        vel_range = 1,
+        max_runs = 1000,
+        informants_strat = 0
+    )
 
 # Run the pso algorithm
 pso.run_algo()
 ```
 
-# Create an Experiment
+## **Create an Experiment**
 
-Create an experiment to run the pso with different parameters.
+Create an experiment for different parameters of the PSO and the Neural Net.
 
 ```
+from experiments import Experiment
+
+
 # Set the paramaters for the pso
 params_pso = {
     "swarmsize": 50,

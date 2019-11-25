@@ -30,7 +30,7 @@ def run_informant_strat():
         "informants_strat": 0
     } 
 
-    net_single = {
+    net_simple = {
         "layer1": {
             "input_count":1,
             "node_count":1,
@@ -38,10 +38,23 @@ def run_informant_strat():
         }
     }
 
+    net_simple_2 = {
+        "layer1": {
+            "input_count":2,
+            "node_count":2,
+            "activations": []
+        },
+        "layer2": {
+            "input_count":2,
+            "node_count": 1,
+            "activations:":[]
+        }
+    }
+
     exp2 = 0
     for i in range(0, 10):
         print("\nRun ", i)
-        experiment2 = Experiment(params_pso, net_single, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment2.run()
         exp2 += experiment2.pso.best.fitness
 
@@ -51,7 +64,7 @@ def run_informant_strat():
     params_pso["informants_strat"] = 1
     for i in range(0, 10):
         print("\nRun ", i)
-        experiment2 = Experiment(params_pso, net_single, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment2.run()
         exp2 += experiment2.pso.best.fitness
 
@@ -61,7 +74,7 @@ def run_informant_strat():
     params_pso["informants_strat"] = 2
     for i in range(0, 10):
         print("\nRun ", i)
-        experiment2 = Experiment(params_pso, net_single, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment2.run()
         exp2 += experiment2.pso.best.fitness
 
@@ -71,7 +84,7 @@ def run_informant_strat():
     params_pso["informants_strat"] = 3
     for i in range(0, 10):
         print("\nRun ", i)
-        experiment2 = Experiment(params_pso, net_single, path="1in_linear.txt", debugMode=False, sampleMode=True)
+        experiment2 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
         experiment2.run()
         exp2 += experiment2.pso.best.fitness
 
@@ -98,7 +111,7 @@ def run_informant_count():
         "informants_strat": 2
     } 
 
-    net_single = {
+    net_simple = {
         "layer1": {
             "input_count":1,
             "node_count":1,
@@ -113,6 +126,7 @@ def run_informant_count():
     bestNum = 0
     params_pso["num_informants"] = 0
     for i in range(40):
+<<<<<<< HEAD
         params_pso["num_informants"] = i+1
         error = 0 
         for j in range(10):
@@ -184,6 +198,13 @@ def run_informant_count():
             "activations:":[]
         }
     }
+=======
+        params_pso["num_informants"] = 1
+        print("\nRun ", i)
+        experiment2 = Experiment(params_pso, net_simple, path="1in_sine.txt", debugMode=False, sampleMode=True)
+        experiment2.run()
+        print("Swarm Size", i, "Results : ", experiment2.pso.best.fitness)
+>>>>>>> 9a1c5e1751d770fbdf46b31e6acd95b59c265cf1
 
     params_pso["beta"] = 0.805
     params_pso["gamma"] = 3.295
