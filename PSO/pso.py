@@ -144,12 +144,12 @@ class PSO:
             inf_best = particle.informants_best()
             particle_vel = particle.velocity
             new_vel = []
-
-            b = np.random.uniform(0, self.beta)
-            c = np.random.uniform(0, self.gamma)
-            d = np.random.uniform(0, self.delta)
                         
-            for i in range(len(particle_vel)):                
+            for i in range(len(particle_vel)):  
+                b = np.random.uniform(0, self.beta)
+                c = np.random.uniform(0, self.gamma)
+                d = np.random.uniform(0, self.delta)
+
                 b_val = b*(part_best[i] - particle.position[i]) 
                 c_val = c*(inf_best[i] -particle.position[i])
                 d_val = d*(best_pos[i] -particle.position[i])
